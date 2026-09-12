@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMARAN (স্মৰণ) — Because Every Memory Matters</title>
+  <meta name="description" content="Personalized Cognitive Memory, Sound, Language & Cultural Engagement System for Elderly Users in North-East India.">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="mode-elderly" data-region="assam">
+  
+  <!-- Atmospheric Ambient Layer -->
+  <div class="bg-ambient-layer"></div>
+
+  <!-- Traditional Assamese Gamusa Weave Accent Top Strip -->
+  <div class="gamusa-border-top"></div>
+
+  <!-- ========================================== -->
+  <!-- TOP GLOBAL NAVBAR                          -->
+  <!-- ========================================== -->
+  <header class="top-navbar" id="mainHeader">
+    <div class="brand-container" onclick="smaranApp.navigateTo('home')">
+      <div class="brand-logo-emblem">
+        <svg viewBox="0 0 40 40" width="30" height="30">
+          <circle cx="20" cy="20" r="18" fill="#1b4d3e"/>
+          <path d="M12,28 C12,22 16,18 20,18 C24,18 28,22 28,28" fill="#f4efe4"/>
+          <circle cx="20" cy="13" r="6" fill="#e8ba98"/>
+          <path d="M14,13 Q20,6 26,13" fill="#ffffff"/>
+          <path d="M10,34 Q20,38 30,34" stroke="#d4a359" stroke-width="2.5" fill="none"/>
+        </svg>
+      </div>
+      <div class="brand-titles">
+        <div class="brand-name">SMARAN</div>
+        <div class="brand-tagline" data-i18n="tagline">Because Every Memory Matters</div>
+      </div>
+    </div>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      
+      <!-- Regional Selector Pill -->
+      <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" id="currentRegionPill" onclick="document.getElementById('regionModal').classList.add('active')">
+        <span>📍</span>
+        <strong id="headerRegionName">Assam (অসম)</strong>
+        <span>▾</span>
+      </button>
+
+      <!-- Language Selector Dropdown Pill -->
+      <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="smaranApp.cycleLanguage()">
+        <span>🗣️</span>
+        <strong id="headerLangName">অসমীয়া</strong>
+        <span>▾</span>
+      </button>
+
+      <!-- Caregiver Dashboard Direct Switcher -->
+      <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" style="background: #eef7f2; border-color: #cde4d5; color: #1b4d3e;" onclick="smaranApp.navigateTo('caregiver')" title="Caregiver & Clinical Analytics">
+        <span>📊</span>
+        <strong>Caregiver Portal</strong>
+      </button>
+
+      <!-- Online / Offline Status Pill -->
+      <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" id="offlineStatusPill" onclick="smaranApp.toggleOfflineMode()" title="Toggle Offline Mode">
+        <span class="status-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #287a4a; display: inline-block;"></span>
+        <strong id="headerConnStatus">Online</strong>
+      </button>
+
+      <!-- Settings Icon Button -->
+      <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" style="padding: 0.45rem 0.75rem;" onclick="document.getElementById('accessibilityModal').classList.add('active')" title="Settings">
+        ⚙️
+      </button>
+
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="app-container">
+
+    <!-- ========================================== -->
+    <!-- VIEW 1: ELDERLY HOMEPAGE (ORGANIC REDESIGN) -->
+    <!-- ========================================== -->
+    <section class="app-view active" id="view-home">
+      
+      <!-- HERO SCENIC LAYERED VIEWPORT -->
+      <div class="hero-scenic-viewport" id="heroScenicBanner">
+        <img src="assets/hero_banner.jpg" alt="Meera overlooking Assam tea gardens" class="hero-scenic-image">
+        <div class="hero-scenic-gradient"></div>
+
+        <div class="hero-cursive-accent">
+          Our People • Our Stories • Our North-East ♡
+        </div>
+
+        <div class="hero-scenic-content">
+          <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem;">
+            <span style="font-size: 1.1rem; color: #c8644a; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;" data-i18n="tagline">
+              COGNITIVE REJUVENATION
+            </span>
+          </div>
+
+          <h1 class="hero-heading" id="heroGreetingText" data-i18n="greeting">
+            সুপ্ৰভাত, মীৰা ❤️
+          </h1>
+
+          <p class="hero-subheading" data-i18n="welcomeSub">
+            আহক আমি একেলগে কিছু শান্ত আৰু আনন্দময় সময় কটাওঁ।
+          </p>
+
+          <!-- Floating Organic Journey Panel -->
+          <div class="hero-journey-panel">
+            <div>
+              <div style="font-size: 0.85rem; font-weight: 800; color: #1b4d3e; text-transform: uppercase; letter-spacing: 0.05em;" data-i18n="todaysJourney">
+                TODAY'S MEMORY JOURNEY
+              </div>
+              <div style="font-size: 1.15rem; font-weight: 700; color: #17382d;" data-i18n="journeyProgress">
+                3 of 5 peaceful activities complete
+              </div>
+            </div>
+
+            <button class="btn-smaran btn-smaran-primary" onclick="smaranGames.launchGame('family_match')" data-i18n="beginJourney">
+              🌱 Begin Today's Journey →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FLOATING IMMERSIVE VOICE INTERACTION STRIP -->
+      <div class="voice-hero-strip">
+        <div class="voice-hero-left">
+          <h2 class="voice-hero-heading" data-i18n="voiceHeroTitle">SMARANৰ সৈতে কথা পাতক</h2>
+          <p class="voice-hero-sub" data-i18n="voiceHeroSubtitle">আপুনি স্বাভাৱিকভাৱে কথা ক'ব পাৰে। আমি আপোনাৰ কথা শুনো।</p>
+          
+          <div class="voice-suggestion-bubbles">
+            <button class="voice-bubble-chip" onclick="smaranVoice.startListening('Start my memory game')" data-i18n="voicePrompt1">
+              “Start my memory game”
+            </button>
+            <button class="voice-bubble-chip" onclick="smaranVoice.startListening('Show my memories')" data-i18n="voicePrompt2">
+              “Show my memories”
+            </button>
+            <button class="voice-bubble-chip" onclick="smaranVoice.startListening('Show my reminders')" data-i18n="voicePrompt3">
+              “What is my next activity?”
+            </button>
+            <button class="voice-bubble-chip" onclick="smaranVoice.startListening('Tell me my reminders')" data-i18n="voicePrompt4">
+              “Tell me my reminders”
+            </button>
+          </div>
+        </div>
+
+        <button class="voice-mic-orb-btn" onclick="smaranVoice.startListening()" title="Speak to SMARAN">
+          🎙️
+        </button>
+      </div>
+
+      <!-- SPOTLIGHT MEMORY STORY ROW -->
+      <div class="spotlight-memory-row">
+        <div class="spotlight-photo-frame">
+          <img src="assets/family_ananya.jpg" alt="Granddaughter Ananya" class="spotlight-photo-img">
+        </div>
+
+        <div class="spotlight-content">
+          <div class="spotlight-badge" data-i18n="todaysMemoryBadge">TODAY'S MEMORY SPOTLIGHT</div>
+          <h2 class="spotlight-title">Ananya</h2>
+          <div class="spotlight-relation" data-i18n="ananyaRelation">Granddaughter • মৰমৰ নাতিয়েক</div>
+          <p class="spotlight-story" data-i18n="ananyaStory">
+            “She visits Grandma every Sunday with fresh sweet coconut pitha and loves listening to Tezpur childhood stories.”
+          </p>
+
+          <button class="btn-smaran btn-smaran-primary" onclick="smaranGames.launchGame('who_is_this')" data-i18n="playWithMemory">
+            Play with this memory →
+          </button>
+        </div>
+      </div>
+
+      <!-- TODAY'S MEMORY JOURNEY PATH (GARDEN METAPHOR) -->
+      <div class="journey-path-container">
+        <h2 class="journey-path-heading" data-i18n="todaysJourney">Today's Memory Journey</h2>
+        <p class="journey-path-sub" data-i18n="gamesSubtitle">Fun activities built around memories, attention and familiar things.</p>
+
+        <div class="journey-nodes-row">
+          
+          <div class="journey-node-card completed" onclick="smaranGames.launchGame('family_match')">
+            <div class="node-icon-circle">🌱</div>
+            <div style="font-weight: 800; color: #17382d;">1. Memory Garden</div>
+            <div style="font-size: 0.85rem; color: #287a4a; font-weight: 700;">✓ Completed</div>
+          </div>
+
+          <div class="journey-node-card completed" onclick="smaranGames.launchGame('sounds_home')">
+            <div class="node-icon-circle">🎵</div>
+            <div style="font-weight: 800; color: #17382d;">2. Sounds From Home</div>
+            <div style="font-size: 0.85rem; color: #287a4a; font-weight: 700;">✓ Completed</div>
+          </div>
+
+          <div class="journey-node-card current" onclick="smaranGames.launchGame('pattern_garden')">
+            <div class="node-icon-circle">🌿</div>
+            <div style="font-weight: 800; color: #17382d;">3. Pattern Garden</div>
+            <div style="font-size: 0.85rem; color: #d4a359; font-weight: 700;">⭐ Current Activity</div>
+          </div>
+
+          <div class="journey-node-card" onclick="smaranGames.launchGame('story_memory')">
+            <div class="node-icon-circle">📖</div>
+            <div style="font-weight: 800; color: #17382d;">4. Story Memory</div>
+            <div style="font-size: 0.85rem; color: #708278; font-weight: 600;">Next in Line</div>
+          </div>
+
+          <div class="journey-node-card" onclick="smaranGames.launchGame('daily_routine')">
+            <div class="node-icon-circle">🌸</div>
+            <div style="font-weight: 800; color: #17382d;">5. Evening Reflection</div>
+            <div style="font-size: 0.85rem; color: #708278; font-weight: 600;">Locked</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MY DAY TIMELINE (CLEAN LIST, NO BOXY CARDS) -->
+      <div class="timeline-flow-container">
+        <h2 class="journey-path-heading" data-i18n="myDayTitle">My Daily Rhythm</h2>
+        <p class="journey-path-sub" data-i18n="myDaySubtitle">Gentle reminders that keep your day peaceful and connected.</p>
+
+        <div class="timeline-flow-list">
+          
+          <div class="timeline-flow-item">
+            <span class="timeline-time-badge">8:00 AM</span>
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
+              <span style="font-size: 1.6rem;">💊</span>
+              <span class="timeline-title-text" data-i18n="medMorning">Morning Medicine</span>
+            </div>
+            <span class="pill-status-done" data-i18n="completedBadge">✓ Completed</span>
+          </div>
+
+          <div class="timeline-flow-item">
+            <span class="timeline-time-badge">10:30 AM</span>
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
+              <span style="font-size: 1.6rem;">💧</span>
+              <span class="timeline-title-text" data-i18n="drinkWater">Warm Water & Tea</span>
+            </div>
+            <span class="pill-status-done" data-i18n="completedBadge">✓ Completed</span>
+          </div>
+
+          <div class="timeline-flow-item">
+            <span class="timeline-time-badge">1:00 PM</span>
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
+              <span style="font-size: 1.6rem;">🍲</span>
+              <span class="timeline-title-text" data-i18n="lunchTime">Nourishing Lunch</span>
+            </div>
+            <span class="pill-status-done" data-i18n="completedBadge">✓ Completed</span>
+          </div>
+
+          <div class="timeline-flow-item">
+            <span class="timeline-time-badge">5:00 PM</span>
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
+              <span style="font-size: 1.6rem;">🚶</span>
+              <span class="timeline-title-text" data-i18n="eveningWalk">Veranda & Garden Walk</span>
+            </div>
+            <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="this.className='pill-status-done'; this.textContent='✓ Completed';" data-i18n="remindMeBtn">
+              Remind Me
+            </button>
+          </div>
+
+          <div class="timeline-flow-item">
+            <span class="timeline-time-badge">7:00 PM</span>
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
+              <span style="font-size: 1.6rem;">📞</span>
+              <span class="timeline-title-text" data-i18n="familyCall">Family Evening Call</span>
+            </div>
+            <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="this.className='pill-status-done'; this.textContent='✓ Completed';" data-i18n="remindMeBtn">
+              Remind Me
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: DEDICATED GAME HUB (/games)        -->
+    <!-- ========================================== -->
+    <section class="app-view" id="view-games">
+      <div class="game-hub-header">
+        <h1 class="hero-heading" data-i18n="gamesTitle">Let's Play, Meera ❤️</h1>
+        <p class="hero-subheading" data-i18n="gamesSubtitle">Fun activities built around memories, attention and familiar things.</p>
+      </div>
+
+      <!-- Meera's Memory Garden Visual Widget -->
+      <div id="hubGardenWidget"></div>
+
+      <!-- Category Filter Pills -->
+      <div class="game-hub-filters">
+        <button class="game-filter-btn active" data-category="all" onclick="smaranGames.filterGames('all', this)" data-i18n="allActivities">🌟 All Activities</button>
+        <button class="game-filter-btn" data-category="memory" onclick="smaranGames.filterGames('memory', this)" data-i18n="catMemory">❤️ Memory</button>
+        <button class="game-filter-btn" data-category="recognition" onclick="smaranGames.filterGames('recognition', this)" data-i18n="catRecognition">👀 Recognition</button>
+        <button class="game-filter-btn" data-category="sound" onclick="smaranGames.filterGames('sound', this)" data-i18n="catSound">🎵 Sound</button>
+        <button class="game-filter-btn" data-category="language" onclick="smaranGames.filterGames('language', this)" data-i18n="catLanguage">🗣️ Language</button>
+        <button class="game-filter-btn" data-category="patterns" onclick="smaranGames.filterGames('patterns', this)" data-i18n="catPatterns">🧩 Patterns</button>
+        <button class="game-filter-btn" data-category="stories" onclick="smaranGames.filterGames('stories', this)" data-i18n="catStories">📖 Stories</button>
+        <button class="game-filter-btn" data-category="places" onclick="smaranGames.filterGames('places', this)" data-i18n="catPlaces">🏡 Places</button>
+        <button class="game-filter-btn" data-category="daily" onclick="smaranGames.filterGames('daily', this)" data-i18n="catDaily">⏰ Daily Life</button>
+      </div>
+
+      <!-- 10 Playable Game Cards Grid -->
+      <div class="games-library-grid" id="gamesLibraryGrid">
+        <!-- Rendered dynamically by smaranGames -->
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 3: ACTIVE GAME PLAYER STAGE           -->
+    <!-- ========================================== -->
+    <section class="app-view" id="view-game-player">
+      <div id="gamePlayerHost">
+        <!-- Game container rendered here -->
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 4: MEMORY VAULT ("Memories That Matter") -->
+    <!-- ========================================== -->
+    <section class="app-view" id="view-vault">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h1 class="hero-heading" data-i18n="navMemories">Memories That Matter</h1>
+          <p class="hero-subheading" data-i18n="memoriesSubtitle">People, places and moments that feel like home.</p>
+        </div>
+        <button class="btn-smaran btn-smaran-primary" onclick="smaranApp.navigateTo('caregiver')">
+          + Add Family Memory & AI Game
+        </button>
+      </div>
+
+      <!-- Grid of Memory Cards -->
+      <div class="grid-2" id="memoryCardsGrid">
+        <!-- Rendered dynamically by JS -->
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 5: REMINDERS / MY DAY                 -->
+    <!-- ========================================== -->
+    <section class="app-view" id="view-reminders">
+      <div style="margin-bottom: 2rem;">
+        <h1 class="hero-heading" data-i18n="myDayTitle">My Daily Rhythm</h1>
+        <p class="hero-subheading" data-i18n="myDaySubtitle">Gentle reminders that keep your day peaceful and connected.</p>
+      </div>
+
+      <div class="timeline-flow-list">
+        <div class="timeline-flow-item">
+          <span class="timeline-time-badge">8:00 AM</span>
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
+            <span style="font-size: 1.6rem;">💊</span>
+            <span class="timeline-title-text" data-i18n="medMorning">Morning Medicine</span>
+          </div>
+          <span class="pill-status-done" data-i18n="completedBadge">✓ Completed</span>
+        </div>
+        <div class="timeline-flow-item">
+          <span class="timeline-time-badge">10:30 AM</span>
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
+            <span style="font-size: 1.6rem;">💧</span>
+            <span class="timeline-title-text" data-i18n="drinkWater">Warm Water & Tea</span>
+          </div>
+          <span class="pill-status-done" data-i18n="completedBadge">✓ Completed</span>
+        </div>
+        <div class="timeline-flow-item">
+          <span class="timeline-time-badge">1:00 PM</span>
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
+            <span style="font-size: 1.6rem;">🍲</span>
+            <span class="timeline-title-text" data-i18n="lunchTime">Nourishing Lunch</span>
+          </div>
+          <span class="pill-status-done" data-i18n="completedBadge">✓ Completed</span>
+        </div>
+        <div class="timeline-flow-item">
+          <span class="timeline-time-badge">5:00 PM</span>
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
+            <span style="font-size: 1.6rem;">🚶</span>
+            <span class="timeline-title-text" data-i18n="eveningWalk">Veranda & Garden Walk</span>
+          </div>
+          <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="this.className='pill-status-done'; this.textContent='✓ Completed';" data-i18n="remindMeBtn">
+            Remind Me
+          </button>
+        </div>
+        <div class="timeline-flow-item">
+          <span class="timeline-time-badge">7:00 PM</span>
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
+            <span style="font-size: 1.6rem;">📞</span>
+            <span class="timeline-title-text" data-i18n="familyCall">Family Evening Call</span>
+          </div>
+          <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="this.className='pill-status-done'; this.textContent='✓ Completed';" data-i18n="remindMeBtn">
+            Remind Me
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 6: CAREGIVER & CLINICAL INTELLIGENCE DASHBOARD      -->
+    <!-- ======================================================== -->
+    <section class="app-view" id="view-caregiver">
+      
+      <!-- Caregiver Top Hero with Clinical Header -->
+      <div class="caregiver-hero">
+        <div class="patient-profile-snippet">
+          <div class="patient-avatar">👵</div>
+          <div>
+            <div class="caregiver-live-badge">
+              <span class="caregiver-live-dot"></span>
+              <span>LIVE CLOUD SYNC ACTIVE</span>
+            </div>
+            <h1 style="font-size: 2.2rem; font-weight: 800; line-height: 1.15;">Meera Sharma</h1>
+            <div style="font-size: 1rem; opacity: 0.92; margin-top: 0.25rem;">
+              Age 72 • Tezpur / Guwahati, Assam • MCI (Mild Cognitive Impairment — Stable)
+            </div>
+            <div style="font-size: 0.85rem; color: #d4ede1; margin-top: 0.35rem;">
+              Primary Caregiver: <strong>Ananya Sharma (Granddaughter)</strong> | Neurologist: <strong>Dr. B. Barua, MD</strong>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <button class="btn-smaran btn-smaran-ghost" style="color: #fff; border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.12);" onclick="smaranApp.downloadClinicalReport()">
+            📄 Export Clinical PDF
+          </button>
+          <button class="btn-smaran btn-smaran-ghost" style="color: #fff; border-color: #fff; background: rgba(255,255,255,0.22);" onclick="smaranApp.navigateTo('home')">
+            ← Back to Elderly View
+          </button>
+        </div>
+      </div>
+
+      <!-- Key Clinical Indicators (4 Key Metric Cards) -->
+      <div class="metrics-strip">
+        <div class="metric-card">
+          <div class="metric-label">Weekly Activities</div>
+          <div class="metric-value">16 / 20</div>
+          <div class="metric-delta">✓ 88% Weekly Consistency Goal</div>
+          <div class="metric-progress"><div class="metric-progress-fill" style="width: 88%;"></div></div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-label">Recall Accuracy</div>
+          <div class="metric-value" style="color: #287a4a;">84%</div>
+          <div class="metric-delta">▲ +6% vs Last Week (Improving)</div>
+          <div class="metric-progress"><div class="metric-progress-fill" style="width: 84%; background: #287a4a;"></div></div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-label">Avg. Engagement</div>
+          <div class="metric-value">18.5 min</div>
+          <div class="metric-delta">❤️ +11% on Assamese Reminiscence</div>
+          <div class="metric-progress"><div class="metric-progress-fill" style="width: 92%;"></div></div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-label">Sundowning Risk</div>
+          <div class="metric-value" style="color: #287a4a;">12% (Low)</div>
+          <div class="metric-delta">🌿 Mitigated by Evening Soundscapes</div>
+          <div class="metric-progress"><div class="metric-progress-fill" style="width: 12%; background: #48bb78;"></div></div>
+        </div>
+      </div>
+
+      <!-- 2-Column Clinical Graphs & Visualizations Grid -->
+      <div class="caregiver-charts-grid">
+        
+        <!-- GRAPH 1: 7-Day Cognitive Recall & Retention Area Chart -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <h3 class="chart-title">📈 7-Day Cognitive Recall & Precision</h3>
+              <p class="chart-subtitle">Personalized Cultural Memories vs Generic Abstract Tests</p>
+            </div>
+            <span class="stat-pill" style="background: #eef7f2; color: #1b4d3e;">▲ +16% Edge</span>
+          </div>
+
+          <!-- Interactive SVG Area Chart -->
+          <div class="svg-chart-wrapper">
+            <svg class="svg-trend-chart" viewBox="0 0 500 200">
+              <defs>
+                <linearGradient id="chartGradGreen" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#287a4a" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#287a4a" stop-opacity="0.0"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Gridlines -->
+              <line x1="40" y1="30" x2="480" y2="30" stroke="#f0f4f0" stroke-width="1.5" />
+              <line x1="40" y1="75" x2="480" y2="75" stroke="#f0f4f0" stroke-width="1.5" />
+              <line x1="40" y1="120" x2="480" y2="120" stroke="#f0f4f0" stroke-width="1.5" />
+              <line x1="40" y1="165" x2="480" y2="165" stroke="#f0f4f0" stroke-width="1.5" />
+
+              <!-- Y-Axis Labels -->
+              <text x="15" y="35" font-size="11" fill="#8ca094" font-weight="700">100%</text>
+              <text x="20" y="80" font-size="11" fill="#8ca094" font-weight="700">75%</text>
+              <text x="20" y="125" font-size="11" fill="#8ca094" font-weight="700">50%</text>
+              <text x="20" y="170" font-size="11" fill="#8ca094" font-weight="700">25%</text>
+
+              <!-- Generic Abstract Curve (Dashed Gray) -->
+              <path d="M 60 115 Q 120 120, 190 110 T 320 108 T 460 112" fill="none" stroke="#a0aec0" stroke-width="2.5" stroke-dasharray="6,4" />
+
+              <!-- SMARAN Personalized Memories Curve (Solid Green Area) -->
+              <path d="M 60 105 Q 120 85, 190 68 T 320 52 T 460 38 L 460 165 L 60 165 Z" fill="url(#chartGradGreen)" />
+              <path d="M 60 105 Q 120 85, 190 68 T 320 52 T 460 38" fill="none" stroke="#287a4a" stroke-width="4" stroke-linecap="round" />
+
+              <!-- Data Point Markers -->
+              <circle cx="60" cy="105" r="5" fill="#287a4a" stroke="#ffffff" stroke-width="2" />
+              <circle cx="125" cy="88" r="5" fill="#287a4a" stroke="#ffffff" stroke-width="2" />
+              <circle cx="190" cy="68" r="5" fill="#287a4a" stroke="#ffffff" stroke-width="2" />
+              <circle cx="255" cy="60" r="5" fill="#287a4a" stroke="#ffffff" stroke-width="2" />
+              <circle cx="320" cy="52" r="5" fill="#287a4a" stroke="#ffffff" stroke-width="2" />
+              <circle cx="390" cy="45" r="5" fill="#287a4a" stroke="#ffffff" stroke-width="2" />
+              <circle cx="460" cy="38" r="6" fill="#ffd700" stroke="#1b4d3e" stroke-width="2.5" />
+
+              <!-- X-Axis Days -->
+              <text x="50" y="188" font-size="11" fill="#556b61" font-weight="700">Mon</text>
+              <text x="115" y="188" font-size="11" fill="#556b61" font-weight="700">Tue</text>
+              <text x="180" y="188" font-size="11" fill="#556b61" font-weight="700">Wed</text>
+              <text x="245" y="188" font-size="11" fill="#556b61" font-weight="700">Thu</text>
+              <text x="310" y="188" font-size="11" fill="#556b61" font-weight="700">Fri</text>
+              <text x="380" y="188" font-size="11" fill="#556b61" font-weight="700">Sat</text>
+              <text x="445" y="188" font-size="11" fill="#1b4d3e" font-weight="800">Sun (Today)</text>
+            </svg>
+          </div>
+
+          <div class="chart-legend">
+            <div class="legend-item">
+              <span class="legend-color-dot" style="background: #287a4a;"></span>
+              <span>SMARAN Cultural Memories (88% Peak)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color-dot" style="background: #a0aec0;"></span>
+              <span>Generic Abstract Tasks (72% Plateau)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- GRAPH 2: Cognitive Domain Breakdown Multi-Progress Bars -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <h3 class="chart-title">🧠 Cognitive Domain Competencies</h3>
+              <p class="chart-subtitle">5-Pillar CST & Reminiscence Assessment</p>
+            </div>
+            <span class="stat-pill">Stable / High</span>
+          </div>
+
+          <div class="domain-bars-list">
+            
+            <div class="domain-bar-item">
+              <div class="domain-bar-header">
+                <span>❤️ Kin & Family Facial Recognition (Ananya, Rohan)</span>
+                <strong style="color: #287a4a;">92% (High)</strong>
+              </div>
+              <div class="domain-bar-track">
+                <div class="domain-bar-fill" style="width: 92%; background: linear-gradient(90deg, #287a4a, #48bb78);"></div>
+              </div>
+            </div>
+
+            <div class="domain-bar-item">
+              <div class="domain-bar-header">
+                <span>🗣️ Auditory & Native Language Memory (Assamese / Bihu)</span>
+                <strong style="color: #287a4a;">88% (High)</strong>
+              </div>
+              <div class="domain-bar-track">
+                <div class="domain-bar-fill" style="width: 88%; background: linear-gradient(90deg, #1b4d3e, #2d7a5b);"></div>
+              </div>
+            </div>
+
+            <div class="domain-bar-item">
+              <div class="domain-bar-header">
+                <span>🏡 Spatial & Regional Landmark Memory (Tea Gardens, Majuli)</span>
+                <strong style="color: #2b6cb0;">82% (Strong)</strong>
+              </div>
+              <div class="domain-bar-track">
+                <div class="domain-bar-fill" style="width: 82%; background: linear-gradient(90deg, #2b6cb0, #4299e1);"></div>
+              </div>
+            </div>
+
+            <div class="domain-bar-item">
+              <div class="domain-bar-header">
+                <span>📖 Episodic Story Comprehension (Veranda Stories)</span>
+                <strong style="color: #d69e2e;">78% (Improving)</strong>
+              </div>
+              <div class="domain-bar-track">
+                <div class="domain-bar-fill" style="width: 78%; background: linear-gradient(90deg, #d69e2e, #ecc94b);"></div>
+              </div>
+            </div>
+
+            <div class="domain-bar-item">
+              <div class="domain-bar-header">
+                <span>⏰ Temporal Daily Rhythm & Sequencing (Morning Steps)</span>
+                <strong style="color: #dd6b20;">74% (Consistent)</strong>
+              </div>
+              <div class="domain-bar-track">
+                <div class="domain-bar-fill" style="width: 74%; background: linear-gradient(90deg, #dd6b20, #ed8936);"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- GRAPH 3: Circadian Rhythm & Agitation Heatmap Bar Chart -->
+      <div class="chart-card" style="margin-bottom: 2rem;">
+        <div class="chart-card-header">
+          <div>
+            <h3 class="chart-title">☀️ Circadian Focus & Calming Rhythm (Time-of-Day)</h3>
+            <p class="chart-subtitle">Cognitive alertness and serenity levels across Meera's waking hours</p>
+          </div>
+          <span class="stat-pill" style="background: #eef7f2; color: #1b4d3e;">Optimal Morning Peak</span>
+        </div>
+
+        <div class="circadian-hours-grid">
+          
+          <div class="circadian-hour-col">
+            <div class="circadian-bar-box">
+              <div class="circadian-bar-inner" style="height: 94%; background: linear-gradient(180deg, #48bb78, #287a4a);" title="8:00 AM - 94% Focus"></div>
+            </div>
+            <div class="circadian-time-label">8:00 AM</div>
+            <span style="font-size: 0.75rem; color: #287a4a; font-weight: 800;">94%</span>
+          </div>
+
+          <div class="circadian-hour-col">
+            <div class="circadian-bar-box">
+              <div class="circadian-bar-inner" style="height: 90%; background: linear-gradient(180deg, #48bb78, #287a4a);" title="10:30 AM - 90% Focus"></div>
+            </div>
+            <div class="circadian-time-label">10:30 AM</div>
+            <span style="font-size: 0.75rem; color: #287a4a; font-weight: 800;">90%</span>
+          </div>
+
+          <div class="circadian-hour-col">
+            <div class="circadian-bar-box">
+              <div class="circadian-bar-inner" style="height: 78%; background: linear-gradient(180deg, #4299e1, #2b6cb0);" title="1:00 PM - 78% Rest"></div>
+            </div>
+            <div class="circadian-time-label">1:00 PM</div>
+            <span style="font-size: 0.75rem; color: #2b6cb0; font-weight: 800;">78%</span>
+          </div>
+
+          <div class="circadian-hour-col">
+            <div class="circadian-bar-box">
+              <div class="circadian-bar-inner" style="height: 82%; background: linear-gradient(180deg, #ecc94b, #d69e2e);" title="3:30 PM - 82% Clarity"></div>
+            </div>
+            <div class="circadian-time-label">3:30 PM</div>
+            <span style="font-size: 0.75rem; color: #d69e2e; font-weight: 800;">82%</span>
+          </div>
+
+          <div class="circadian-hour-col">
+            <div class="circadian-bar-box">
+              <div class="circadian-bar-inner" style="height: 88%; background: linear-gradient(180deg, #48bb78, #287a4a);" title="5:00 PM - 88% Serene (Tea Walk)"></div>
+            </div>
+            <div class="circadian-time-label">5:00 PM</div>
+            <span style="font-size: 0.75rem; color: #287a4a; font-weight: 800;">88%</span>
+          </div>
+
+          <div class="circadian-hour-col">
+            <div class="circadian-bar-box">
+              <div class="circadian-bar-inner" style="height: 92%; background: linear-gradient(180deg, #ed64a6, #c8644a);" title="7:00 PM - 92% Joy (Family Call)"></div>
+            </div>
+            <div class="circadian-time-label">7:00 PM</div>
+            <span style="font-size: 0.75rem; color: #c8644a; font-weight: 800;">92%</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- AI Clinical Insights Card -->
+      <div class="ai-insight-box">
+        <span class="clinical-badge-pill">🩺 AI CLINICAL REMINISCENCE INSIGHT</span>
+        <h3 style="font-size: 1.5rem; font-weight: 800; color: #17382d; margin-bottom: 0.6rem;">
+          Personalized North-East cultural assets reduced cognitive retrieval latency by 57% (from 4.2s to 1.8s).
+        </h3>
+        <p style="font-size: 1.15rem; color: #495e54; line-height: 1.65; margin-bottom: 1.25rem;">
+          Activities featuring granddaughter <strong>Ananya</strong>, familiar <strong>Assamese tea garden soundscapes</strong>, and <strong>Bihu memories</strong> yielded the highest response accuracy (84%) and +11% active engagement duration compared to generic abstract puzzles. Sundowning agitation risks remain at a healthy low (12%).
+        </p>
+
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <button class="btn-smaran btn-smaran-primary btn-smaran-pill-sm" onclick="smaranApp.downloadClinicalReport()">
+            📄 Download Neurologist Assessment (PDF)
+          </button>
+          <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="smaranApp.triggerOfflineSync()">
+            ⚡ Force Cloud Data Synchronization
+          </button>
+        </div>
+      </div>
+
+      <!-- CAREGIVER MEMORY STUDIO (UPLOAD FAMILY MEMORY & AUTO-GENERATE AI GAME) -->
+      <div class="memory-studio-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+          <div>
+            <h3 class="chart-title">✨ Caregiver Memory Studio</h3>
+            <p class="chart-subtitle">Upload family photos, native voice notes, and generate personalized cognitive games for Meera</p>
+          </div>
+          <span class="stat-pill" style="background: #eef7f2; color: #1b4d3e;">AI Game Engine Active</span>
+        </div>
+
+        <form id="familyContribForm" onsubmit="smaranApp.handleFamilyContribution(event)" class="studio-form-grid">
+          
+          <div class="studio-input-group">
+            <label>Memory Subject / Person Name</label>
+            <input type="text" id="contribName" class="studio-input" placeholder="e.g. Rohan (Grandson) or Tezpur Ancestral Veranda" required>
+          </div>
+
+          <div class="studio-input-group">
+            <label>Relationship / Context</label>
+            <input type="text" id="contribRelation" class="studio-input" placeholder="e.g. Grandson / Guwahati Family Trip" required>
+          </div>
+
+          <div class="studio-input-group" style="grid-column: 1 / -1;">
+            <label>Cherished Story / Emotional Memory Prompt</label>
+            <textarea id="contribStory" class="studio-input" rows="3" placeholder="e.g. Rohan loves playing the dhol during Bohag Bihu and eating Grandma's special narikolor laru on the veranda." required></textarea>
+          </div>
+
+          <div class="studio-input-group">
+            <label>Native Audio Voice Note Dialect</label>
+            <select id="contribAudioDialect" class="studio-input">
+              <option value="as">অসমীয়া (Assamese Voice Note)</option>
+              <option value="hi">हिंदी (Hindi Voice Note)</option>
+              <option value="kh">Khasi (Meghalaya Voice Note)</option>
+              <option value="en">English (Warm Voice Note)</option>
+            </select>
+          </div>
+
+          <div class="studio-input-group">
+            <label>Target Game Mode to Generate</label>
+            <select id="contribGameMode" class="studio-input">
+              <option value="who_is_this">Family Face & Name Recognition ("Who Is This?")</option>
+              <option value="story_memory">3-Step Multi-Question Story Recall</option>
+              <option value="place_memory">Spatial Recognition ("Places That Feel Like Home")</option>
+            </select>
+          </div>
+
+          <div style="grid-column: 1 / -1; margin-top: 0.5rem; display: flex; gap: 1rem; align-items: center;">
+            <button type="submit" class="btn-smaran btn-smaran-primary">
+              ✨ Generate AI Cognitive Game for Meera →
+            </button>
+            <span style="font-size: 0.88rem; color: #62756c;">
+              Instantly converts photos & voice prompts into an interactive memory game.
+            </span>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Recent Session Logs -->
+      <div style="background: #ffffff; border-radius: 24px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.04); border: 2px solid #e2ece4;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3 class="chart-title">📊 Recent Cognitive Game Sessions</h3>
+          <span class="stat-pill">8 Sessions Logged</span>
+        </div>
+        <div id="caregiverSessionList">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- ELEGANT BOTTOM NAVIGATION                  -->
+  <!-- ========================================== -->
+  <nav class="elderly-bottom-navbar" id="elderlyBottomNav">
+    <button class="nav-elderly-pill active" data-view="home">
+      <span style="font-size: 1.4rem;">🏠</span>
+      <span data-i18n="navHome">Home</span>
+    </button>
+
+    <button class="nav-elderly-pill" data-view="vault">
+      <span style="font-size: 1.4rem;">❤️</span>
+      <span data-i18n="navMemories">Memories</span>
+    </button>
+
+    <button class="nav-elderly-pill" data-view="games">
+      <span style="font-size: 1.4rem;">🎮</span>
+      <span data-i18n="navGames">Games</span>
+    </button>
+
+    <button class="nav-elderly-pill" data-view="reminders">
+      <span style="font-size: 1.4rem;">⏰</span>
+      <span data-i18n="navMyDay">My Day</span>
+    </button>
+  </nav>
+
+  <!-- ========================================== -->
+  <!-- MODAL: VOICE ASSISTANT OVERLAY             -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="voiceModal">
+    <div class="modal-card voice-active-overlay">
+      <button class="modal-close-btn" onclick="smaranVoice.setState('IDLE')">✕</button>
+      
+      <div id="voiceMicOrb" class="voice-mic-orb listening">🎤</div>
+      <div class="voice-status-text" id="voiceStatusHeading" data-i18n="voiceListening">
+        Listening...
+      </div>
+
+      <!-- Animated Voice Waveform Bars -->
+      <div class="voice-waves-container" id="voiceWaveformBox">
+        <div class="voice-wave-bar"></div>
+        <div class="voice-wave-bar"></div>
+        <div class="voice-wave-bar"></div>
+        <div class="voice-wave-bar"></div>
+        <div class="voice-wave-bar"></div>
+      </div>
+
+      <div class="voice-transcript-bubble" id="voiceTranscriptText">
+        Speak naturally to SMARAN...
+      </div>
+
+      <div class="voice-response-bubble" id="voiceResponseText" style="display: none;"></div>
+
+      <div class="voice-suggestion-bubbles" style="justify-content: center; margin-top: 1.5rem;">
+        <button class="voice-bubble-chip" style="background: #e8f2ec; color: #1b4d3e;" onclick="smaranVoice.startListening('Start my memory game')" data-i18n="voicePrompt1">
+          “Start my memory game”
+        </button>
+        <button class="voice-bubble-chip" style="background: #e8f2ec; color: #1b4d3e;" onclick="smaranVoice.startListening('Show my memories')" data-i18n="voicePrompt2">
+          “Show my memories”
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: IN-GAME VOICE ANSWER CONFIRMATION   -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="voiceAnswerModal">
+    <div class="modal-card voice-active-overlay">
+      <button class="modal-close-btn" onclick="document.getElementById('voiceAnswerModal').classList.remove('active')">✕</button>
+      
+      <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🎙️</div>
+      <div class="voice-status-text" data-i18n="answerByVoice">Speak Your Answer</div>
+      <p style="color: #62756c; margin-bottom: 1.25rem;">Speak the answer clearly (e.g. “Ananya”)</p>
+
+      <div class="voice-transcript-bubble" id="voiceAnswerTranscript">
+        Listening for your answer...
+      </div>
+
+      <div style="margin-top: 1.75rem; display: flex; gap: 0.75rem; justify-content: center;">
+        <button class="btn-smaran btn-smaran-primary" onclick="smaranVoice.confirmInGameVoiceAnswer()" data-i18n="confirmAnswer">
+          ✓ Confirm Answer
+        </button>
+        <button class="btn-smaran btn-smaran-ghost" onclick="document.getElementById('voiceAnswerModal').classList.remove('active')" data-i18n="tryAgain">
+          Try Again
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: REGIONAL STATE SELECTOR             -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="regionModal">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="document.getElementById('regionModal').classList.remove('active')">✕</button>
+      <h2 style="font-size: 1.8rem; font-weight: 800; color: #17382d; margin-bottom: 0.5rem;">
+        Choose Your North-East Region (আপোনাৰ ৰাজ্য বাছক)
+      </h2>
+      <p style="color: #62756c; margin-bottom: 1.5rem;">
+        Selecting a state personalizes ambient soundscapes, cultural themes, language greetings, and visual environments:
+      </p>
+      
+      <div class="state-grid-selector">
+        <button class="state-select-btn active" data-region="assam" onclick="smaranApp.setRegion('assam'); document.getElementById('regionModal').classList.remove('active');">
+          <strong>Assam</strong>
+          <span class="state-native">অসম</span>
+        </button>
+        <button class="state-select-btn" data-region="meghalaya" onclick="smaranApp.setRegion('meghalaya'); document.getElementById('regionModal').classList.remove('active');">
+          <strong>Meghalaya</strong>
+          <span class="state-native">মেঘালয়</span>
+        </button>
+        <button class="state-select-btn" data-region="arunachal" onclick="smaranApp.setRegion('arunachal'); document.getElementById('regionModal').classList.remove('active');">
+          <strong>Arunachal</strong>
+          <span class="state-native">অৰুণাচল</span>
+        </button>
+        <button class="state-select-btn" data-region="manipur" onclick="smaranApp.setRegion('manipur'); document.getElementById('regionModal').classList.remove('active');">
+          <strong>Manipur</strong>
+          <span class="state-native">মণিপুৰ</span>
+        </button>
+        <button class="state-select-btn" data-region="mizoram" onclick="smaranApp.setRegion('mizoram'); document.getElementById('regionModal').classList.remove('active');">
+          <strong>Mizoram</strong>
+          <span class="state-native">মিজোৰাম</span>
+        </button>
+        <button class="state-select-btn" data-region="nagaland" onclick="smaranApp.setRegion('nagaland'); document.getElementById('regionModal').classList.remove('active');">
+          <strong>Nagaland</strong>
+          <span class="state-native">নাগালেণ্ড</span>
+        </button>
+        <button class="state-select-btn" data-region="tripura" onclick="smaranApp.setRegion('tripura'); document.getElementById('regionModal').classList.remove('active');">
+          <strong>Tripura</strong>
+          <span class="state-native">ত্ৰিপুৰা</span>
+        </button>
+        <button class="state-select-btn" data-region="sikkim" onclick="smaranApp.setRegion('sikkim'); document.getElementById('regionModal').classList.remove('active');">
+          <strong>Sikkim</strong>
+          <span class="state-native">চিক্কিম</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- ACCESSIBILITY MODAL                        -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="accessibilityModal">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="document.getElementById('accessibilityModal').classList.remove('active')">✕</button>
+      <h2 style="font-size: 1.8rem; font-weight: 800; color: #17382d; margin-bottom: 1.5rem;" data-i18n="navSettings">
+        ♿ Accessibility Controls
+      </h2>
+
+      <!-- Font Size -->
+      <div style="margin-bottom: 1.5rem;">
+        <label style="font-weight: 700; display: block; margin-bottom: 0.5rem;">TEXT SIZE (আখৰৰ আকাৰ)</label>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm active" onclick="document.body.classList.remove('font-large','font-xlarge')" style="flex: 1;">Normal</button>
+          <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="document.body.classList.remove('font-xlarge'); document.body.classList.add('font-large')" style="flex: 1;">Large</button>
+          <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="document.body.classList.remove('font-large'); document.body.classList.add('font-xlarge')" style="flex: 1;">Extra Large</button>
+        </div>
+      </div>
+
+      <!-- High Contrast Toggle -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <div>
+          <div style="font-weight: 700; font-size: 1.1rem;">HIGH CONTRAST (উচ্চ বৈসাদৃশ্য)</div>
+          <div style="font-size: 0.85rem; color: #62756c;">Crisp gold and dark borders for vision clarity</div>
+        </div>
+        <input type="checkbox" id="highContrastToggle" onchange="document.body.classList.toggle('high-contrast', this.checked)" style="width: 24px; height: 24px; cursor: pointer;">
+      </div>
+
+      <!-- Sound Toggle -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <div style="font-weight: 700; font-size: 1.1rem;">REGIONAL SOUND AMBIENCE</div>
+          <div style="font-size: 0.85rem; color: #62756c;">Enable nature audio and gentle game chimes</div>
+        </div>
+        <input type="checkbox" id="soundMasterToggle" checked onchange="SMARAN_STATE.soundEnabled = this.checked" style="width: 24px; height: 24px; cursor: pointer;">
+      </div>
+
+      <button class="btn-smaran btn-smaran-primary" style="width: 100%;" onclick="document.getElementById('accessibilityModal').classList.remove('active')">
+        ✓ Apply Settings
+      </button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/i18n.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/voice.js"></script>
+  <script src="js/games.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

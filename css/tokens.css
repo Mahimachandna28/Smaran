@@ -1,0 +1,175 @@
+:root {
+  /* Color Palette - North East Natural Heritage */
+  --color-primary: #1b4d3e;          /* Deep Assam Forest */
+  --color-primary-light: #2d6a54;    /* Tea Canopy */
+  --color-primary-dark: #0f2e24;     /* Kaziranga Night */
+  --color-primary-soft: #e8f2ec;     /* Soft Tea Mist */
+  
+  --color-secondary: #c8644a;        /* Majuli River Terracotta */
+  --color-secondary-soft: #fbf0ec;
+  
+  --color-accent: #d4a359;           /* Assamese Muga Silk Gold */
+  --color-accent-soft: #fcf6eb;
+  
+  --color-river: #356b7c;            /* Brahmaputra Blue */
+  --color-river-soft: #edf5f8;
+  
+  --color-gamusa: #d9383a;           /* Traditional Red Weave Accent */
+  
+  --color-bg: #f8f6f0;               /* Warm Organic Cream */
+  --color-surface: #ffffff;          /* Pure Card White */
+  --color-surface-hover: #f3efe6;
+  --color-surface-border: #e3ded2;
+  
+  --color-text-main: #19241f;        /* Deep Charcoal Forest */
+  --color-text-muted: #5e6b64;       /* Gentle Slate Moss */
+  --color-text-light: #8e9c94;
+  
+  --color-success: #287a4a;
+  --color-success-bg: #e6f6ec;
+  --color-warning: #d9822b;
+  --color-warning-bg: #fdf3e7;
+  --color-danger: #c93b2b;
+  
+  /* Radii */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(27, 77, 62, 0.05);
+  --shadow-md: 0 8px 24px rgba(27, 77, 62, 0.08);
+  --shadow-lg: 0 16px 40px rgba(27, 77, 62, 0.12);
+  --shadow-tactile: 0 8px 0 rgba(27, 77, 62, 0.2), 0 12px 24px rgba(27, 77, 62, 0.15);
+  --shadow-tactile-active: 0 2px 0 rgba(27, 77, 62, 0.2), 0 4px 10px rgba(27, 77, 62, 0.1);
+  --shadow-glow: 0 0 30px rgba(212, 163, 89, 0.35);
+
+  /* Typography Scale */
+  --font-base: 'Outfit', 'Noto Sans Bengali', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  
+  --text-xs: 0.85rem;
+  --text-sm: 0.95rem;
+  --text-base: 1.1rem;
+  --text-lg: 1.3rem;
+  --text-xl: 1.6rem;
+  --text-2xl: 2.1rem;
+  --text-3xl: 2.8rem;
+  --text-hero: 3.5rem;
+  
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.65;
+  
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Elderly Mode Global Overrides */
+body.mode-elderly {
+  --text-base: 1.3rem;
+  --text-lg: 1.55rem;
+  --text-xl: 1.9rem;
+  --text-2xl: 2.5rem;
+  --text-3xl: 3.2rem;
+  --text-hero: 4rem;
+  --line-height-normal: 1.6;
+  --line-height-relaxed: 1.8;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-xl: 36px;
+}
+
+/* Accessibility: Font Sizing Modes */
+body.font-large {
+  font-size: 115%;
+}
+
+body.font-xlarge {
+  font-size: 130%;
+}
+
+/* Accessibility: High Contrast Mode */
+body.high-contrast {
+  --color-bg: #000000;
+  --color-surface: #121212;
+  --color-surface-hover: #222222;
+  --color-surface-border: #ffd700;
+  --color-primary: #00e676;
+  --color-primary-light: #69f0ae;
+  --color-primary-dark: #00b0ff;
+  --color-primary-soft: #1a3325;
+  --color-secondary: #ffab40;
+  --color-accent: #ffd700;
+  --color-river: #40c4ff;
+  --color-gamusa: #ff5252;
+  --color-text-main: #ffffff;
+  --color-text-muted: #e0e0e0;
+  --color-text-light: #b0bec5;
+  --shadow-tactile: 0 6px 0 #ffd700;
+}
+
+/* Accessibility: Reduced Motion */
+body.reduced-motion * {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+/* Regional Theme: Assam (Default) */
+[data-region="assam"] {
+  --region-primary: #1b4d3e;
+  --region-accent: #d4a359;
+  --region-hero-gradient: linear-gradient(135deg, #1b4d3e 0%, #2a614f 50%, #3e7864 100%);
+}
+
+/* Regional Theme: Meghalaya (Clouds & Living Roots) */
+[data-region="meghalaya"] {
+  --region-primary: #224b5e;
+  --region-accent: #6eb5c0;
+  --region-hero-gradient: linear-gradient(135deg, #1b3b4b 0%, #2a556b 50%, #457892 100%);
+}
+
+/* Regional Theme: Arunachal (Sunlit Peaks) */
+[data-region="arunachal"] {
+  --region-primary: #3d3b6b;
+  --region-accent: #f4a261;
+  --region-hero-gradient: linear-gradient(135deg, #2b294e 0%, #3d3b6b 50%, #6864a6 100%);
+}
+
+/* Regional Theme: Manipur (Loktak Floating Sanctuary) */
+[data-region="manipur"] {
+  --region-primary: #1c4b44;
+  --region-accent: #e76f51;
+  --region-hero-gradient: linear-gradient(135deg, #133934 0%, #1c4b44 50%, #3b7d72 100%);
+}
+
+/* Regional Theme: Mizoram (Blue Hills) */
+[data-region="mizoram"] {
+  --region-primary: #2b3a67;
+  --region-accent: #499f68;
+  --region-hero-gradient: linear-gradient(135deg, #1d2747 0%, #2b3a67 50%, #445999 100%);
+}
+
+/* Regional Theme: Nagaland (Highlands & Hornbill Hearth) */
+[data-region="nagaland"] {
+  --region-primary: #4a2c2c;
+  --region-accent: #e07a5f;
+  --region-hero-gradient: linear-gradient(135deg, #331d1d 0%, #4a2c2c 50%, #754848 100%);
+}
+
+/* Regional Theme: Tripura (Royal Heritage & Bamboo) */
+[data-region="tripura"] {
+  --region-primary: #3c4a3e;
+  --region-accent: #e9c46a;
+  --region-hero-gradient: linear-gradient(135deg, #2a352c 0%, #3c4a3e 50%, #5d7060 100%);
+}
+
+/* Regional Theme: Sikkim (Kanchenjunga Dawn) */
+[data-region="sikkim"] {
+  --region-primary: #283e56;
+  --region-accent: #e76f51;
+  --region-hero-gradient: linear-gradient(135deg, #1c2e42 0%, #283e56 50%, #47688c 100%);
+}
