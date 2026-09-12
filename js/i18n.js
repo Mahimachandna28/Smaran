@@ -4,7 +4,7 @@
  */
 
 const SMARAN_I18N = {
-  currentLang: localStorage.getItem('smaran_lang') || 'as',
+  currentLang: localStorage.getItem('smaran_lang') || 'en',
 
   dictionaries: {
     // ==========================================

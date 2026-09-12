@@ -4,7 +4,7 @@
 
 const SMARAN_STATE = {
   currentRegion: 'assam',
-  currentLang: 'as', // 'as', 'en', 'hi'
+  currentLang: 'en', // 'en', 'as', 'hi', 'kh'
   currentMode: 'elderly', // 'elderly' or 'caregiver'
   currentView: 'home', // 'home', 'games', 'game-player', 'vault', 'reminders', 'caregiver', 'world'
   isOffline: false,

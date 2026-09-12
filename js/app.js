@@ -27,8 +27,8 @@ class SmaranApp {
   }
 
   renderInitialState() {
-    // Read saved language or default to Assamese
-    const savedLang = localStorage.getItem('smaran_lang') || 'as';
+    // Read saved language or default to English
+    const savedLang = localStorage.getItem('smaran_lang') || 'en';
     this.setLanguage(savedLang);
     this.setRegion('assam');
     this.navigateTo('home');
@@ -75,8 +75,8 @@ class SmaranApp {
 
   // --- Multi-Lingual Engine ---
   cycleLanguage() {
-    const langs = ['as', 'en', 'hi', 'kh'];
-    const currentLang = window.i18n ? window.i18n.currentLang : (localStorage.getItem('smaran_lang') || 'as');
+    const langs = ['en', 'as', 'hi', 'kh'];
+    const currentLang = window.i18n ? window.i18n.currentLang : (localStorage.getItem('smaran_lang') || 'en');
     const currentIdx = langs.indexOf(currentLang);
     const nextLang = langs[(currentIdx + 1) % langs.length];
     this.setLanguage(nextLang);
@@ -87,7 +87,6 @@ class SmaranApp {
       window.i18n.setLanguage(langCode);
     }
   }
-
 
   // --- Regional Personalization Engine ---
   setRegion(regionId) {
@@ -111,21 +110,6 @@ class SmaranApp {
     if (headerReg) {
       headerReg.textContent = `${reg.name} (${reg.nativeName})`;
     }
-
-    // Automatically synchronize primary regional language!
-    const regionLangMap = {
-      meghalaya: 'kh',
-      assam: 'as',
-      arunachal: 'hi',
-      manipur: 'as',
-      mizoram: 'kh',
-      nagaland: 'en',
-      tripura: 'as',
-      sikkim: 'hi'
-    };
-
-    const targetLang = regionLangMap[regionId] || 'as';
-    this.setLanguage(targetLang);
   }
 
 
