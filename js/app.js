@@ -111,7 +111,23 @@ class SmaranApp {
     if (headerReg) {
       headerReg.textContent = `${reg.name} (${reg.nativeName})`;
     }
+
+    // Automatically synchronize primary regional language!
+    const regionLangMap = {
+      meghalaya: 'kh',
+      assam: 'as',
+      arunachal: 'hi',
+      manipur: 'as',
+      mizoram: 'kh',
+      nagaland: 'en',
+      tripura: 'as',
+      sikkim: 'hi'
+    };
+
+    const targetLang = regionLangMap[regionId] || 'as';
+    this.setLanguage(targetLang);
   }
+
 
   // --- Emotional Check-in Flow ---
   handleMoodSelection(moodType) {
