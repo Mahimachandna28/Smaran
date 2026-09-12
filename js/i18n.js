@@ -435,7 +435,7 @@ const SMARAN_I18N = {
   // Set active language and refresh DOM across all screens
   setLanguage(langCode) {
     if (!this.dictionaries[langCode]) {
-      langCode = 'as';
+      langCode = 'en';
     }
     this.currentLang = langCode;
     try {
