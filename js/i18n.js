@@ -406,44 +406,77 @@ const SMARAN_I18N = {
     }
   },
 
-  // Lookup helper
+  // Lookup helper with robust alias fallback
   t(key) {
     const dict = this.dictionaries[this.currentLang] || this.dictionaries.en;
-    if (dict[key] !== undefined) return dict[key];
-    const fallback = this.dictionaries.en[key];
-    return fallback !== undefined ? fallback : key;
+    if (dict && dict[key] !== undefined) return dict[key];
+
+    const aliases = {
+      welcomeSub: 'greetingSub',
+      voiceHeroTitle: 'talkToSmaran',
+      voiceHeroSubtitle: 'voiceSubtext',
+      todaysMemoryBadge: 'todaysMemoryTitle',
+      ananyaRelation: 'memoryRelation',
+      ananyaStory: 'memoryStorySnippet',
+      memoriesSubtitle: 'myDaySubtitle'
+    };
+
+    if (aliases[key] && dict && dict[aliases[key]] !== undefined) {
+      return dict[aliases[key]];
+    }
+
+    const enDict = this.dictionaries.en;
+    if (enDict[key] !== undefined) return enDict[key];
+    if (aliases[key] && enDict[aliases[key]] !== undefined) return enDict[aliases[key]];
+
+    return key;
   },
 
-  // Set active language and refresh DOM
+  // Set active language and refresh DOM across all screens
   setLanguage(langCode) {
     if (!this.dictionaries[langCode]) {
-      langCode = 'en';
+      langCode = 'as';
     }
     this.currentLang = langCode;
     try {
       localStorage.setItem('smaran_lang', langCode);
     } catch (e) {}
 
-    // Apply translations to all DOM elements with [data-i18n]
+    // 1. Apply translations to all DOM elements with [data-i18n]
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
-      el.textContent = this.t(key);
+      if (key) {
+        el.textContent = this.t(key);
+      }
     });
 
-    // Update language pill display
+    // 2. Update language pill display in header
     const headerLangEl = document.getElementById('headerLangName');
     if (headerLangEl) {
       headerLangEl.textContent = this.dictionaries[langCode].langName;
     }
 
-    // Refresh components that need re-rendering
+    // 3. Update voice recognition language if available
+    if (window.smaranVoice && window.smaranVoice.recognition) {
+      if (langCode === 'hi') window.smaranVoice.recognition.lang = 'hi-IN';
+      else if (langCode === 'as') window.smaranVoice.recognition.lang = 'as-IN';
+      else window.smaranVoice.recognition.lang = 'en-IN';
+    }
+
+    // 4. Refresh Game Hub cards
     if (window.smaranGames && typeof window.smaranGames.renderGameHub === 'function') {
       const activeCategory = document.querySelector('.game-filter-btn.active')?.getAttribute('data-category') || 'all';
       window.smaranGames.renderGameHub(activeCategory);
+    }
+
+    // 5. Refresh Memory Vault
+    if (window.smaranApp && typeof window.smaranApp.renderMemoryVault === 'function') {
+      window.smaranApp.renderMemoryVault();
     }
   }
 };
 
 window.i18n = SMARAN_I18N;
 window.SMARAN_I18N = SMARAN_I18N;
+
 
