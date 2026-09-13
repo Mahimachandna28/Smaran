@@ -851,3 +851,353 @@ body.high-contrast .btn-smaran-ghost {
   gap: 0.4rem;
 }
 
+/* ==========================================
+   CLINICAL REPORT MODAL & PRINT STYLES
+   ========================================== */
+.modal-card-wide {
+  max-width: 860px !important;
+  width: 95% !important;
+  padding: 2rem !important;
+}
+
+.clinical-report-sheet {
+  background: #ffffff;
+  border: 1px solid #cde4d5;
+  border-radius: 16px;
+  padding: 2rem;
+  color: #17382d;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 20px rgba(27, 77, 62, 0.06);
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.report-table th {
+  background: #1b4d3e;
+  color: #ffffff;
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.report-table td {
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid #e2ebe5;
+}
+
+.report-table tr:nth-child(even) td {
+  background: #f9fbf9;
+}
+
+.global-toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: #17382d;
+  color: #ffffff;
+  padding: 0.9rem 1.6rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(212, 163, 89, 0.4);
+  z-index: 99999;
+  transform: translateY(100px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.global-toast.active {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #clinicalReportModal,
+  #clinicalReportModal * {
+    visibility: visible !important;
+  }
+  #clinicalReportModal {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    display: block !important;
+    opacity: 1 !important;
+  }
+  #clinicalReportModal .modal-close-btn,
+  #clinicalReportModal .report-modal-actions {
+    display: none !important;
+  }
+  #clinicalReportModal .modal-card {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}
+
+/* ==========================================
+   SOS EMERGENCY & SECURITY COMPONENT STYLES
+   ========================================== */
+
+/* 1. Header SOS Trigger */
+.btn-sos-pulse {
+  background: #b91c1c !important;
+  color: #ffffff !important;
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 0 rgba(185, 28, 28, 0.6);
+  animation: sosPulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+  font-weight: 800 !important;
+  letter-spacing: 0.04em;
+}
+
+.btn-sos-pulse:hover {
+  background: #991b1b !important;
+  border-color: #f87171 !important;
+  transform: translateY(-2px) scale(1.03);
+}
+
+@keyframes sosPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(185, 28, 28, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(185, 28, 28, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(185, 28, 28, 0);
+  }
+}
+
+/* 2. Floating SOS Button for Elderly Access */
+.floating-sos-trigger {
+  position: fixed;
+  bottom: 5.25rem;
+  right: 1.5rem;
+  z-index: 1800;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: #b91c1c;
+  color: #ffffff;
+  border: 3px solid #fecaca;
+  padding: 0.85rem 1.6rem;
+  border-radius: 9999px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 26px rgba(185, 28, 28, 0.45);
+  transition: all 0.25s ease;
+  user-select: none;
+  animation: sosPulse 2.4s infinite;
+}
+
+.floating-sos-trigger:hover {
+  background: #991b1b;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 32px rgba(185, 28, 28, 0.55);
+}
+
+.floating-sos-trigger:active {
+  transform: translateY(1px);
+}
+
+/* Hide floating SOS on caregiver view */
+body[data-view="caregiver"] .floating-sos-trigger,
+#view-caregiver.active ~ .floating-sos-trigger {
+  display: none !important;
+}
+
+/* 3. SOS Modal Styling */
+.sos-modal-card {
+  max-width: 650px !important;
+  width: 95% !important;
+  background: #ffffff !important;
+  border: 3px solid #ef4444 !important;
+  border-radius: 28px !important;
+  padding: 2rem !important;
+}
+
+.sos-alert-banner {
+  background: #fef2f2;
+  border: 2px dashed #ef4444;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.sos-comfort-card {
+  background: #f0fdf4;
+  border: 2px solid #bbf7d0;
+  border-radius: 18px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.sos-contact-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border: 2px solid #e2ece4;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 0.75rem;
+}
+
+.sos-contact-btn:hover {
+  border-color: #b91c1c;
+  background: #fef2f2;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(185, 28, 28, 0.12);
+}
+
+.sos-contact-btn.primary-call {
+  background: #b91c1c;
+  color: #ffffff;
+  border-color: #b91c1c;
+}
+
+.sos-contact-btn.primary-call:hover {
+  background: #991b1b;
+  border-color: #991b1b;
+}
+
+/* 4. PIN Security Gate Modal */
+.pin-modal-card {
+  max-width: 420px !important;
+  width: 92% !important;
+  text-align: center;
+  padding: 2.25rem 2rem !important;
+}
+
+.pin-dots-display {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  margin: 1.75rem 0 1.25rem;
+}
+
+.pin-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #cde4d5;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.pin-dot.filled {
+  background: #1b4d3e;
+  border-color: #1b4d3e;
+  transform: scale(1.2);
+  box-shadow: 0 2px 8px rgba(27, 77, 62, 0.3);
+}
+
+.pin-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  max-width: 300px;
+  margin: 0 auto 1.25rem;
+}
+
+.pin-key {
+  background: #f4f8f5;
+  border: 1px solid #dce8df;
+  border-radius: 16px;
+  height: 58px;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #17382d;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+  user-select: none;
+}
+
+.pin-key:hover {
+  background: #1b4d3e;
+  color: #ffffff;
+  border-color: #1b4d3e;
+  transform: scale(1.05);
+}
+
+.pin-key:active {
+  transform: scale(0.95);
+}
+
+.pin-key.key-action {
+  font-size: 1rem;
+  font-weight: 600;
+  background: #eef5f0;
+}
+
+.shake-error {
+  animation: shakeKey 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shakeKey {
+  10%, 90% { transform: translate3d(-2px, 0, 0); }
+  20%, 80% { transform: translate3d(3px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-5px, 0, 0); }
+  40%, 60% { transform: translate3d(5px, 0, 0); }
+}
+
+/* 5. Caregiver Security Command Center */
+.security-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+.security-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 1.5rem;
+  border: 1px solid #e2ece4;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.security-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}

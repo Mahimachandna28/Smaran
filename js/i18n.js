@@ -24,6 +24,8 @@ const SMARAN_I18N = {
       navMyDay: 'দিনলিপি',
       navProgress: 'প্ৰগতি',
       navSettings: 'ছেটিংছ',
+      navSos: 'জরুৰীকালীন সাহায্য',
+      sosSubtitle: 'মীৰা, আমি আপোনাৰ লগতেই আছোঁ। সহায় এতিয়াই পাব।',
 
       // Hero & Journey
       todaysJourney: 'আজিৰ স্মৃতি যাত্ৰা',
@@ -130,6 +132,8 @@ const SMARAN_I18N = {
       navMyDay: 'My Day',
       navProgress: 'Progress',
       navSettings: 'Settings',
+      navSos: 'Emergency SOS',
+      sosSubtitle: 'Meera, we are right here with you. Help is one tap away.',
 
       todaysJourney: "Today's Memory Journey",
       journeyProgress: '3 of 5 activities completed',
@@ -227,6 +231,8 @@ const SMARAN_I18N = {
       navMyDay: 'दिनचर्या',
       navProgress: 'प्रगति',
       navSettings: 'सेटिंग्स',
+      navSos: 'आपातकालीन सहायता (SOS)',
+      sosSubtitle: 'मीरा जी, हम आपके साथ हैं। मदद तुरंत उपलब्ध है।',
 
       todaysJourney: 'आज की स्मृति यात्रा',
       journeyProgress: '5 में से 3 गतिविधियाँ पूरी',
@@ -324,6 +330,8 @@ const SMARAN_I18N = {
       navMyDay: 'Ka Sngi Jong Nga',
       navProgress: 'Jingsan',
       navSettings: 'Ki Jingbuh',
+      navSos: 'Jingsau Kyrkieh (SOS)',
+      sosSubtitle: 'Meera, ngi don bad phi. Ka jingsau ka lah ban poi kloi.',
 
       todaysJourney: 'Ka Jingiaid Jingkynmaw Mynta',
       journeyProgress: '3 na 5 tylli la dep',

@@ -48,6 +48,74 @@ const SMARAN_STATE = {
     ]
   },
 
+  // Security & Emergency Configuration
+  security: {
+    pin: '1234',
+    isUnlocked: false,
+    autoLockMinutes: 10,
+    emergencyContacts: [
+      {
+        id: 'c1',
+        name: 'Ananya Sharma (Granddaughter)',
+        nativeName: 'অনন্যা শৰ্মা (নাতিনী)',
+        relation: 'Primary Caregiver',
+        phone: '+91 98765 43210',
+        whatsapp: true,
+        priority: 'Primary'
+      },
+      {
+        id: 'c2',
+        name: 'Dr. B. Barua, MD',
+        nativeName: 'ডাঃ বি. বৰুৱা (চিকিৎসক)',
+        relation: 'Attending Neurologist (GNRC)',
+        phone: '+91 98123 45678',
+        whatsapp: true,
+        priority: 'Medical'
+      },
+      {
+        id: 'c3',
+        name: 'Assam Medical Ambulance',
+        nativeName: '১০৮ এম্বুলেন্স সেৱা',
+        relation: 'Emergency Services',
+        phone: '108',
+        whatsapp: false,
+        priority: 'Emergency'
+      },
+      {
+        id: 'c4',
+        name: 'Elderline Senior Citizens',
+        nativeName: '১৪৫৬৭ জ্যেষ্ঠ নাগৰিক হেল্পলাইন',
+        relation: 'National Helpline',
+        phone: '14567',
+        whatsapp: false,
+        priority: 'Support'
+      }
+    ],
+    sosHistory: [
+      {
+        id: 'sos_101',
+        timestamp: '11 Sep 2026, 04:45 PM',
+        type: 'Sundowning Agitation Alarm',
+        location: 'Home Veranda (Tezpur)',
+        triggeredBy: 'Voice Prompt ("Help")',
+        status: 'Resolved',
+        notes: 'Evening tea garden soundscape played; Ananya arrived in 2 min.'
+      }
+    ],
+    geofence: {
+      enabled: true,
+      safeZoneName: 'Home & Veranda, Tezpur (Assam)',
+      coordinates: '26.6338° N, 92.7926° E',
+      status: 'Inside Safe Zone',
+      lastChecked: 'Just now'
+    },
+    fallDetection: {
+      enabled: true,
+      sensitivity: 'High (Elderly Optimised)',
+      lastStatus: 'Normal Motion'
+    }
+  },
+
   // Caregiver Analytics
   caregiver: {
     metrics: {

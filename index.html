@@ -56,10 +56,17 @@
         <span>▾</span>
       </button>
 
-      <!-- Caregiver Dashboard Direct Switcher -->
-      <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" style="background: #eef7f2; border-color: #cde4d5; color: #1b4d3e;" onclick="smaranApp.navigateTo('caregiver')" title="Caregiver & Clinical Analytics">
+      <!-- Emergency SOS Quick Pill -->
+      <button class="btn-smaran btn-smaran-pill-sm btn-sos-pulse" onclick="smaranApp.openSosModal()" title="Emergency SOS (জরুৰীকালীন সাহায্য)">
+        <span>🆘</span>
+        <strong data-i18n="navSos">SOS HELP</strong>
+      </button>
+
+      <!-- Caregiver Dashboard Switcher with Security Lock -->
+      <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" style="background: #eef7f2; border-color: #cde4d5; color: #1b4d3e;" onclick="smaranApp.requestCaregiverAccess()" title="Caregiver & Clinical Analytics">
         <span>📊</span>
         <strong>Caregiver Portal</strong>
+        <span id="caregiverLockStatusIcon" style="font-size: 0.85rem; margin-left: 0.2rem;">🔒</span>
       </button>
 
       <!-- Online / Offline Status Pill -->
@@ -419,6 +426,12 @@
           <button class="btn-smaran btn-smaran-ghost" style="color: #fff; border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.12);" onclick="smaranApp.downloadClinicalReport()">
             📄 Export Clinical PDF
           </button>
+          <button class="btn-smaran btn-smaran-ghost" style="color: #fff; border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.12);" onclick="smaranApp.openReportModal()">
+            👁️ View Assessment Report
+          </button>
+          <button class="btn-smaran btn-smaran-ghost" style="color: #fff; border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.12);" onclick="smaranApp.lockCaregiverPortal()" title="Lock Caregiver Portal">
+            🔒 Lock Portal
+          </button>
           <button class="btn-smaran btn-smaran-ghost" style="color: #fff; border-color: #fff; background: rgba(255,255,255,0.22);" onclick="smaranApp.navigateTo('home')">
             ← Back to Elderly View
           </button>
@@ -674,6 +687,9 @@
           <button class="btn-smaran btn-smaran-primary btn-smaran-pill-sm" onclick="smaranApp.downloadClinicalReport()">
             📄 Download Neurologist Assessment (PDF)
           </button>
+          <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="smaranApp.openReportModal()">
+            👁️ View Assessment Report
+          </button>
           <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="smaranApp.triggerOfflineSync()">
             ⚡ Force Cloud Data Synchronization
           </button>
@@ -746,6 +762,86 @@
         </div>
         <div id="caregiverSessionList">
           <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- CAREGIVER SECURITY & SOS EMERGENCY COMMAND CENTER        -->
+      <!-- ======================================================== -->
+      <div style="background: #ffffff; border-radius: 24px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.04); border: 2px solid #e2ece4;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem;">
+          <div>
+            <h3 class="chart-title">🛡️ Security, SOS & Emergency Management</h3>
+            <p class="chart-subtitle">Emergency response configuration, Caregiver PIN protection, and patient safety tracking</p>
+          </div>
+          <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+            <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="smaranApp.openChangePinModal()">
+              🔑 Change Security PIN
+            </button>
+            <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" style="background: #fee2e2; border-color: #fca5a5; color: #991b1b;" onclick="smaranApp.testSosAlert()">
+              🚨 Test SOS Alert
+            </button>
+          </div>
+        </div>
+
+        <div class="security-dashboard-grid">
+          <!-- Card 1: Emergency Contacts -->
+          <div class="security-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h4 style="font-size: 1.05rem; font-weight: 700; color: #17382d; margin: 0;">📞 Emergency Contacts</h4>
+              <span class="security-badge-pill" style="background: #eef7f2; color: #1b4d3e;">4 Registered</span>
+            </div>
+            <div id="caregiverEmergencyContactsList">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Card 2: Geofence & Safety Zone -->
+          <div class="security-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h4 style="font-size: 1.05rem; font-weight: 700; color: #17382d; margin: 0;">📍 Geofence & Safe Zone</h4>
+              <span class="security-badge-pill" style="background: #eef7f2; color: #287a4a;">🟢 Safe Zone Active</span>
+            </div>
+            <div style="background: #f4f8f5; border-radius: 12px; padding: 0.85rem; margin-bottom: 0.75rem; font-size: 0.88rem;">
+              <div style="font-weight: 700; color: #17382d;">Home & Veranda (Tezpur, Assam)</div>
+              <div style="font-size: 0.8rem; color: #62756c; margin-top: 0.2rem;">Coordinates: 26.6338° N, 92.7926° E</div>
+              <div style="font-size: 0.8rem; color: #287a4a; font-weight: 700; margin-top: 0.35rem;">✓ Meera is safely inside boundary</div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #495e54; margin-top: 0.5rem;">
+              <span>Fall Detection Sensor:</span>
+              <strong style="color: #1b4d3e;">High (Calibrated)</strong>
+            </div>
+          </div>
+
+          <!-- Card 3: Security & Privacy Encryption -->
+          <div class="security-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h4 style="font-size: 1.05rem; font-weight: 700; color: #17382d; margin: 0;">🔒 Security & Encryption</h4>
+              <span class="security-badge-pill" style="background: #eef7f2; color: #1b4d3e;">DISHA & HIPAA</span>
+            </div>
+            <div style="font-size: 0.86rem; line-height: 1.6; color: #495e54; margin-bottom: 0.75rem;">
+              <div>• <strong>PIN Gate:</strong> Enforced on Portal Access</div>
+              <div>• <strong>Data Protection:</strong> AES-256 Offline Encryption</div>
+              <div>• <strong>Clinical Integrity:</strong> Hash-Verified Records</div>
+            </div>
+            <div style="border-top: 1px solid #e2ece4; padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.82rem; color: #62756c;">Caregiver PIN:</span>
+              <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" style="font-size: 0.82rem; padding: 0.25rem 0.65rem;" onclick="smaranApp.openChangePinModal()">
+                •••• (Change)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SOS Incident Audit Log -->
+        <div style="margin-top: 1.5rem; border-top: 1px solid #e2ece4; padding-top: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <h4 style="font-size: 1.05rem; font-weight: 700; color: #17382d; margin: 0;">🚨 Recent SOS & Emergency Alerts Log</h4>
+            <span class="stat-pill" id="caregiverSosCountBadge">1 Event Logged</span>
+          </div>
+          <div id="caregiverSosLogList">
+            <!-- Rendered dynamically -->
+          </div>
         </div>
       </div>
     </section>
@@ -935,7 +1031,391 @@
     </div>
   </div>
 
+  <!-- ========================================== -->
+  <!-- CLINICAL REPORT MODAL PREVIEW              -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="clinicalReportModal">
+    <div class="modal-card modal-card-wide">
+      <button class="modal-close-btn" onclick="document.getElementById('clinicalReportModal').classList.remove('active')">✕</button>
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #e2ebe5;" class="report-modal-actions">
+        <div>
+          <span class="clinical-badge-pill" style="margin-bottom: 0.35rem;">CONFIDENTIAL CLINICAL RECORD</span>
+          <h2 style="font-size: 1.6rem; font-weight: 800; color: #17382d; margin: 0;">
+            Neurological Assessment & Cognitive Progress
+          </h2>
+          <div style="font-size: 0.88rem; color: #62756c; margin-top: 0.2rem;">
+            Patient: <strong>Meera Sharma (Age 72)</strong> • MCI Stage 2 • Reporting Period: Last 30 Days
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+          <button class="btn-smaran btn-smaran-primary btn-smaran-pill-sm" onclick="smaranApp.downloadClinicalReport()">
+            📄 Download Official PDF
+          </button>
+          <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="window.print()">
+            🖨️ Print
+          </button>
+          <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="document.getElementById('clinicalReportModal').classList.remove('active')">
+            ✕ Close
+          </button>
+        </div>
+      </div>
+
+      <!-- Formatted Clinical Report Body -->
+      <div class="clinical-report-sheet">
+        <!-- Report Brand Strip -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; border-bottom: 2px solid #1b4d3e; padding-bottom: 1rem;">
+          <div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: #1b4d3e; letter-spacing: -0.5px;">SMARAN (স্মৰণ)</div>
+            <div style="font-size: 0.85rem; color: #556b61; font-weight: 600;">Personalized Cognitive Memory, Sound & Cultural Engagement System</div>
+            <div style="font-size: 0.78rem; color: #8ca094;">Clinical Health Assessment • North-East India Reminiscence Therapy</div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.82rem; font-weight: 700; color: #1b4d3e;" id="reportDateDisplay"></div>
+            <div style="font-size: 0.78rem; color: #62756c;">Ref ID: <strong>SMR-2024-NE-0842</strong></div>
+            <div style="font-size: 0.75rem; color: #287a4a; font-weight: 700;">● STABLE EVALUATION</div>
+          </div>
+        </div>
+
+        <!-- Patient Demographics Grid -->
+        <div style="background: #f4f8f5; border: 1px solid #cde4d5; border-radius: 12px; padding: 1rem; margin-bottom: 1.25rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.75rem; font-size: 0.88rem;">
+          <div>
+            <div><strong>Patient Name:</strong> Meera Sharma (Age 72 • Female)</div>
+            <div style="margin-top: 0.25rem;"><strong>Residence:</strong> Tezpur / Guwahati, Assam</div>
+            <div style="margin-top: 0.25rem;"><strong>Primary Language:</strong> Assamese (অসমীয়া)</div>
+          </div>
+          <div>
+            <div><strong>Clinical Classification:</strong> Mild Cognitive Impairment (MCI Stage 2)</div>
+            <div style="margin-top: 0.25rem;"><strong>Primary Caregiver:</strong> Ananya Sharma (Granddaughter)</div>
+            <div style="margin-top: 0.25rem;"><strong>Attending Neurologist:</strong> Dr. B. Barua, MD (Neurology)</div>
+          </div>
+        </div>
+
+        <!-- Key Indicators Summary -->
+        <h4 style="font-size: 1rem; font-weight: 800; color: #1b4d3e; margin-bottom: 0.75rem;">
+          1. KEY CLINICAL INDICATORS & METRICS
+        </h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;">
+          <div style="background: #ffffff; border: 1px solid #dce8df; border-radius: 10px; padding: 0.75rem; text-align: center;">
+            <div style="font-size: 0.75rem; color: #62756c;">7-Day Recall Accuracy</div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: #287a4a;">84%</div>
+            <div style="font-size: 0.72rem; color: #287a4a;">▲ +12% vs Baseline</div>
+          </div>
+          <div style="background: #ffffff; border: 1px solid #dce8df; border-radius: 10px; padding: 0.75rem; text-align: center;">
+            <div style="font-size: 0.75rem; color: #62756c;">Cognitive Retrieval Latency</div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: #1b4d3e;">1.8s</div>
+            <div style="font-size: 0.72rem; color: #287a4a;">Reduced by 57% (4.2s baseline)</div>
+          </div>
+          <div style="background: #ffffff; border: 1px solid #dce8df; border-radius: 10px; padding: 0.75rem; text-align: center;">
+            <div style="font-size: 0.75rem; color: #62756c;">Weekly Adherence</div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: #287a4a;">88%</div>
+            <div style="font-size: 0.72rem; color: #62756c;">16 of 20 Sessions Completed</div>
+          </div>
+          <div style="background: #ffffff; border: 1px solid #dce8df; border-radius: 10px; padding: 0.75rem; text-align: center;">
+            <div style="font-size: 0.75rem; color: #62756c;">Sundowning Agitation Risk</div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: #287a4a;">12%</div>
+            <div style="font-size: 0.72rem; color: #287a4a;">🌿 Low / Controlled</div>
+          </div>
+        </div>
+
+        <!-- 5-Pillar Breakdown Table -->
+        <h4 style="font-size: 1rem; font-weight: 800; color: #1b4d3e; margin-bottom: 0.5rem;">
+          2. 5-PILLAR COGNITIVE DOMAIN BREAKDOWN
+        </h4>
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Cognitive Domain</th>
+              <th>Accuracy</th>
+              <th>Status</th>
+              <th>Reminiscence Therapy Impact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. Kin & Family Recognition</strong></td>
+              <td style="font-weight: 700; color: #287a4a;">92%</td>
+              <td><span class="stat-pill" style="background: #eef7f2; color: #1b4d3e; padding: 0.2rem 0.5rem; font-size: 0.75rem;">Optimal</span></td>
+              <td>Immediate identification of granddaughter Ananya; heightened positive valence.</td>
+            </tr>
+            <tr>
+              <td><strong>2. Auditory & Native Dialect</strong></td>
+              <td style="font-weight: 700; color: #287a4a;">88%</td>
+              <td><span class="stat-pill" style="background: #eef7f2; color: #1b4d3e; padding: 0.2rem 0.5rem; font-size: 0.75rem;">Optimal</span></td>
+              <td>High acoustic comprehension with native Assamese Bihu melodies and folk songs.</td>
+            </tr>
+            <tr>
+              <td><strong>3. Spatial & Regional Landmarks</strong></td>
+              <td style="font-weight: 700; color: #287a4a;">82%</td>
+              <td><span class="stat-pill" style="background: #eef7f2; color: #1b4d3e; padding: 0.2rem 0.5rem; font-size: 0.75rem;">Strong</span></td>
+              <td>Consistently maps Majuli Island & Kaziranga visual cues with zero disorientation.</td>
+            </tr>
+            <tr>
+              <td><strong>4. Episodic Story Comprehension</strong></td>
+              <td style="font-weight: 700; color: #287a4a;">78%</td>
+              <td><span class="stat-pill" style="background: #fdf6e7; color: #b7791f; padding: 0.2rem 0.5rem; font-size: 0.75rem;">Improving</span></td>
+              <td>Follows veranda tea storytelling sequences with minimal hint intervention.</td>
+            </tr>
+            <tr>
+              <td><strong>5. Temporal Rhythm & Sequencing</strong></td>
+              <td style="font-weight: 700; color: #287a4a;">74%</td>
+              <td><span class="stat-pill" style="background: #fdf6e7; color: #b7791f; padding: 0.2rem 0.5rem; font-size: 0.75rem;">Stable</span></td>
+              <td>Morning routine sequencing preserved; benefit observed with gentle audio cues.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Neurological Observations -->
+        <h4 style="font-size: 1rem; font-weight: 800; color: #1b4d3e; margin-top: 1.25rem; margin-bottom: 0.5rem;">
+          3. CLINICAL NEUROLOGICAL OBSERVATIONS
+        </h4>
+        <div style="background: #fdfdf9; border-left: 4px solid #1b4d3e; padding: 0.85rem 1rem; font-size: 0.88rem; color: #354b40; line-height: 1.6; margin-bottom: 1.25rem;">
+          “Personalized Reminiscence Therapy (RT) utilizing authentic North-Eastern cultural stimuli (native Assamese soundscapes, tea garden imagery, family audio recordings) reduced cognitive retrieval latency by 57% (from 4.2s to 1.8s) compared to standard abstract cognitive exercises. Sundowning agitation was effectively curbed by evening soundscape interventions (12% agitation index). Emotional wellness and motivation remain at their highest levels since program inception.”
+        </div>
+
+        <!-- Neurologist Care Plan -->
+        <h4 style="font-size: 1rem; font-weight: 800; color: #1b4d3e; margin-bottom: 0.5rem;">
+          4. MEDICAL CARE PLAN & RECOMMENDATIONS
+        </h4>
+        <ul style="margin: 0 0 1.5rem 1.25rem; padding: 0; font-size: 0.88rem; line-height: 1.6; color: #495e54;">
+          <li>Maintain 15-20 minutes of daily multi-sensory cognitive sessions in native Assamese.</li>
+          <li>Continue family audio recording contributions via Caregiver Memory Studio.</li>
+          <li>Trigger calming tea garden nature audio at 04:30 PM daily to prevent sundowning anxiety.</li>
+          <li>Next clinical neurological follow-up review with Dr. B. Barua scheduled in 6 weeks.</li>
+        </ul>
+
+        <!-- Sign-off Block -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 1rem; border-top: 1px solid #dce8df; font-size: 0.82rem; color: #62756c; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="font-weight: 700; color: #1b4d3e;">Dr. B. Barua, MD (Neurology)</div>
+            <div>Consultant Neurologist • GNRC Guwahati</div>
+            <div style="font-size: 0.75rem; color: #287a4a; margin-top: 0.2rem;">✓ Digitally Authenticated [DrBBarua_MD_GNRC_2024]</div>
+          </div>
+          <div style="text-align: right;">
+            <div>SMARAN Clinical Intelligence Engine v2.4</div>
+            <div style="font-size: 0.75rem;">Offline Clinical Record Hash: <strong>8f4a-9b2c-e17d-44a3</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- ACCESSIBLE FLOATING SOS BUTTON             -->
+  <!-- ========================================== -->
+  <button class="floating-sos-trigger" id="floatingSosBtn" onclick="smaranApp.openSosModal()" title="Emergency SOS (জরুৰীকালীন সাহায্য)">
+    <span style="font-size: 1.4rem;">🆘</span>
+    <span>SOS HELP</span>
+  </button>
+
+  <!-- ========================================== -->
+  <!-- MODAL: EMERGENCY SOS ASSISTANCE OVERLAY    -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="sosModal">
+    <div class="modal-card sos-modal-card">
+      <button class="modal-close-btn" onclick="smaranApp.closeSosModal()">✕</button>
+
+      <!-- Alert Banner -->
+      <div class="sos-alert-banner">
+        <span style="font-size: 2.2rem;">🆘</span>
+        <div>
+          <div style="font-weight: 800; font-size: 1.35rem; color: #991b1b; text-transform: uppercase; letter-spacing: 0.04em;">
+            Emergency Assistance (জরুৰীকালীন সাহায্য)
+          </div>
+          <div style="font-size: 0.95rem; color: #7f1d1d; margin-top: 0.2rem;">
+            Meera, we are here with you. Help is one tap away.
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Location & Status Chip -->
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 0.65rem 1rem; font-size: 0.85rem; color: #475569; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+        <div>📍 <strong>Location:</strong> Tezpur, Assam (Home Veranda Safe Zone)</div>
+        <div>🔋 <strong>Device Battery:</strong> 94% • 📶 <strong>Network:</strong> Connected</div>
+      </div>
+
+      <!-- Ananya's Reassuring Comfort Voice Card -->
+      <div class="sos-comfort-card">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <span style="font-size: 2rem;">👵❤️👧</span>
+          <div>
+            <div style="font-weight: 800; color: #166534; font-size: 1.05rem;">
+              Ananya's Voice (অনন্যাৰ মাত শুনক)
+            </div>
+            <div style="font-size: 0.88rem; color: #15803d; font-style: italic; margin-top: 0.15rem;">
+              “Aita, don't worry. You are safe at home. I am right here.”
+            </div>
+          </div>
+        </div>
+        <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" style="background: #ffffff; border-color: #16a34a; color: #166534;" onclick="smaranApp.playComfortVoice()">
+          🔊 Play Comfort Voice
+        </button>
+      </div>
+
+      <!-- Quick 1-Tap Emergency Contact Buttons -->
+      <div style="margin-bottom: 1.25rem;">
+        <div style="font-size: 0.88rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 0.6rem; letter-spacing: 0.05em;">
+          Direct Emergency Contacts
+        </div>
+
+        <!-- 1. Primary Caregiver Ananya -->
+        <a href="tel:+919876543210" class="sos-contact-btn primary-call" onclick="smaranApp.logEmergencyCall('Ananya Sharma')">
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <span style="font-size: 1.6rem;">📞</span>
+            <div>
+              <div style="font-weight: 800; font-size: 1.1rem;">Call Ananya Sharma (Granddaughter)</div>
+              <div style="font-size: 0.85rem; opacity: 0.9;">+91 98765 43210 • Primary Caregiver</div>
+            </div>
+          </div>
+          <span style="font-weight: 800; font-size: 1.15rem;">CALL NOW →</span>
+        </a>
+
+        <!-- 2. Medical Doctor -->
+        <a href="tel:+919812345678" class="sos-contact-btn" onclick="smaranApp.logEmergencyCall('Dr. B. Barua')">
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <span style="font-size: 1.5rem;">🩺</span>
+            <div>
+              <div style="font-weight: 800; color: #17382d;">Dr. B. Barua, MD (Neurologist)</div>
+              <div style="font-size: 0.82rem; color: #64748b;">+91 98123 45678 • GNRC Guwahati</div>
+            </div>
+          </div>
+          <span style="color: #1b4d3e; font-weight: 700;">CALL →</span>
+        </a>
+
+        <!-- 3. Assam 108 Ambulance -->
+        <a href="tel:108" class="sos-contact-btn" onclick="smaranApp.logEmergencyCall('108 Emergency Ambulance')">
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <span style="font-size: 1.5rem;">🚑</span>
+            <div>
+              <div style="font-weight: 800; color: #991b1b;">108 Medical Ambulance (Assam Emergency)</div>
+              <div style="font-size: 0.82rem; color: #64748b;">Government Free Emergency Response</div>
+            </div>
+          </div>
+          <span style="color: #991b1b; font-weight: 700;">CALL 108 →</span>
+        </a>
+
+        <!-- 4. Senior Citizen Helpline -->
+        <a href="tel:14567" class="sos-contact-btn" onclick="smaranApp.logEmergencyCall('Elderline Helpline')">
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <span style="font-size: 1.5rem;">🤝</span>
+            <div>
+              <div style="font-weight: 800; color: #17382d;">14567 National Elderline</div>
+              <div style="font-size: 0.82rem; color: #64748b;">Elderly Citizen Support & Care Helpline</div>
+            </div>
+          </div>
+          <span style="color: #1b4d3e; font-weight: 700;">CALL 14567 →</span>
+        </a>
+      </div>
+
+      <!-- Quick Action Controls -->
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+        <button class="btn-smaran btn-smaran-primary" style="flex: 1; min-height: 48px; background: #b91c1c;" onclick="smaranApp.broadcastSosAlert()">
+          🚨 Send Urgent SMS & WhatsApp Alert
+        </button>
+        <button class="btn-smaran btn-smaran-ghost" id="sirenToggleBtn" style="flex: 1; min-height: 48px; border-color: #f87171; color: #991b1b;" onclick="smaranApp.toggleEmergencySiren()">
+          🔔 Sound Alarm Beacon
+        </button>
+      </div>
+
+      <!-- Dismiss Button -->
+      <button class="btn-smaran btn-smaran-ghost" style="width: 100%; border-color: #cde4d5; color: #1b4d3e;" onclick="smaranApp.resolveSosSafely()">
+        ✓ I Am Safe Now (মই এতিয়া নিৰাপদে আছোঁ)
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: CAREGIVER PIN SECURITY GATE         -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="securityPinModal">
+    <div class="modal-card pin-modal-card">
+      <button class="modal-close-btn" onclick="smaranApp.closePinModal()">✕</button>
+      
+      <div style="font-size: 2.4rem; margin-bottom: 0.5rem;">🔐</div>
+      <h3 style="font-size: 1.5rem; font-weight: 800; color: #17382d; margin-bottom: 0.4rem;">
+        Caregiver Security Gate
+      </h3>
+      <p style="font-size: 0.92rem; color: #62756c; margin-bottom: 1rem;">
+        Enter your 4-digit security PIN to access clinical analytics and private records.
+      </p>
+
+      <!-- PIN Display Dots -->
+      <div class="pin-dots-display" id="pinDotsWrapper">
+        <div class="pin-dot" id="pinDot0"></div>
+        <div class="pin-dot" id="pinDot1"></div>
+        <div class="pin-dot" id="pinDot2"></div>
+        <div class="pin-dot" id="pinDot3"></div>
+      </div>
+
+      <!-- Keypad -->
+      <div class="pin-keypad">
+        <button class="pin-key" onclick="smaranApp.enterPinDigit('1')">1</button>
+        <button class="pin-key" onclick="smaranApp.enterPinDigit('2')">2</button>
+        <button class="pin-key" onclick="smaranApp.enterPinDigit('3')">3</button>
+        <button class="pin-key" onclick="smaranApp.enterPinDigit('4')">4</button>
+        <button class="pin-key" onclick="smaranApp.enterPinDigit('5')">5</button>
+        <button class="pin-key" onclick="smaranApp.enterPinDigit('6')">6</button>
+        <button class="pin-key" onclick="smaranApp.enterPinDigit('7')">7</button>
+        <button class="pin-key" onclick="smaranApp.enterPinDigit('8')">8</button>
+        <button class="pin-key" onclick="smaranApp.enterPinDigit('9')">9</button>
+        <button class="pin-key key-action" onclick="smaranApp.clearPin()">⌫</button>
+        <button class="pin-key" onclick="smaranApp.enterPinDigit('0')">0</button>
+        <button class="pin-key key-action" style="background: #1b4d3e; color: #ffffff;" onclick="smaranApp.submitEnteredPin()">🔓</button>
+      </div>
+
+      <!-- Helper Hint -->
+      <div style="font-size: 0.82rem; color: #8ca094; margin-top: 0.5rem;">
+        Default Security PIN: <strong>1234</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: CHANGE CAREGIVER PIN                -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="changePinModal">
+    <div class="modal-card" style="max-width: 440px;">
+      <button class="modal-close-btn" onclick="document.getElementById('changePinModal').classList.remove('active')">✕</button>
+      <h3 style="font-size: 1.4rem; font-weight: 800; color: #17382d; margin-bottom: 0.4rem;">
+        🔑 Change Security PIN
+      </h3>
+      <p style="font-size: 0.9rem; color: #62756c; margin-bottom: 1.25rem;">
+        Set a new 4-digit PIN for Caregiver Dashboard protection.
+      </p>
+
+      <form onsubmit="smaranApp.handleSaveNewPin(event)">
+        <div style="margin-bottom: 1rem; text-align: left;">
+          <label style="font-size: 0.85rem; font-weight: 700; color: #495e54; display: block; margin-bottom: 0.35rem;">Current PIN</label>
+          <input type="password" id="currentPinInput" maxlength="4" class="studio-input" placeholder="Current 4-digit PIN" required style="letter-spacing: 0.3em; font-size: 1.2rem; text-align: center;">
+        </div>
+
+        <div style="margin-bottom: 1rem; text-align: left;">
+          <label style="font-size: 0.85rem; font-weight: 700; color: #495e54; display: block; margin-bottom: 0.35rem;">New 4-Digit PIN</label>
+          <input type="password" id="newPinInput" maxlength="4" class="studio-input" placeholder="New 4-digit PIN" required style="letter-spacing: 0.3em; font-size: 1.2rem; text-align: center;">
+        </div>
+
+        <div style="margin-bottom: 1.5rem; text-align: left;">
+          <label style="font-size: 0.85rem; font-weight: 700; color: #495e54; display: block; margin-bottom: 0.35rem;">Confirm New PIN</label>
+          <input type="password" id="confirmNewPinInput" maxlength="4" class="studio-input" placeholder="Confirm 4 digits" required style="letter-spacing: 0.3em; font-size: 1.2rem; text-align: center;">
+        </div>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <button type="submit" class="btn-smaran btn-smaran-primary" style="flex: 1;">
+            ✓ Save New PIN
+          </button>
+          <button type="button" class="btn-smaran btn-smaran-ghost" onclick="document.getElementById('changePinModal').classList.remove('active')">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Global Floating Toast Notification -->
+  <div id="smaranGlobalToast" class="global-toast"></div>
+
   <!-- Scripts -->
+  <script src="js/jspdf.umd.min.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/state.js"></script>
   <script src="js/audio.js"></script>

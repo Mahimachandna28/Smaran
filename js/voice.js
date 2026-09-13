@@ -152,8 +152,11 @@ class SmaranVoiceAssistant {
     let action = 'START_MEMORY_GAME';
     let reply = 'Of course, Meera. Let us begin today\'s memory activity.';
 
-    // English & Hindi Command Rules
-    if (text.includes('memory') || text.includes('game') || text.includes('খেলা') || text.includes('मेमोरी') || text.includes('gaw')) {
+    // English, Assamese, Hindi & Khasi Emergency & Voice Commands
+    if (text.includes('sos') || text.includes('emergency') || text.includes('danger') || text.includes('জরুৰী') || text.includes('বিপদ') || text.includes('मदদ') || text.includes('बचाओ') || text.includes('help me') || text.includes('সহায় লাগে')) {
+      action = 'TRIGGER_SOS';
+      reply = 'Opening emergency assistance right away. Meera, help is right here.';
+    } else if (text.includes('memory') || text.includes('game') || text.includes('খেলা') || text.includes('मेमोरी') || text.includes('gaw')) {
       action = 'START_MEMORY_GAME';
       reply = 'Of course, Meera. Starting Memory Garden.';
     } else if (text.includes('memories') || text.includes('photo') || text.includes('স্মৃতি') || text.includes('यादें') || text.includes('kynmaw')) {
@@ -198,6 +201,11 @@ class SmaranVoiceAssistant {
     if (!window.smaranApp) return;
 
     switch (action) {
+      case 'TRIGGER_SOS':
+        if (window.smaranApp && window.smaranApp.openSosModal) {
+          window.smaranApp.openSosModal();
+        }
+        break;
       case 'START_MEMORY_GAME':
         if (window.smaranGames) window.smaranGames.launchGame('family_match');
         break;
