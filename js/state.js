@@ -180,6 +180,14 @@ const SMARAN_STATE = {
     }
   ],
 
+  // Daily Hydration & Fluid Intake Compass
+  hydration: {
+    current: 5,
+    target: 8,
+    glassSizeMl: 250,
+    lastLoggedAt: '11:15 AM'
+  },
+
   // Security & Emergency Configuration
   security: {
     pin: '1234',
@@ -577,13 +585,13 @@ const SMARAN_STATE = {
       stateId: 'assam',
       stateName: 'Assam (অসম)',
       tag: '❤️ Family & Kin',
-      name: 'Grandson Rohan Playing the Dhol',
-      nativeName: 'নাতি ৰোহনৰ ঢোল বাদন',
+      name: 'Grandson Rohan & Sweet Treats',
+      nativeName: 'নাতি ৰোহন আৰু বিহুৰ মিঠাই',
       relation: 'Grandson (নাতি)',
-      story: 'Rohan practicing the Bohag Bihu rhythms in the courtyard, making Grandma smile and gently tap her feet to every beat.',
-      favoritePlace: 'Courtyard Jackfruit Tree',
-      heroImg: 'assets/family_ananya.jpg',
-      audioPrompt: 'Rohan laughing: Aita, listen to this new Bihu rhythm I learned!',
+      story: 'Grandson Rohan visiting Grandma with traditional Assamese narikol laddu and pitha sweets, filling the house with cheerful laughter and sweet festival aromas.',
+      favoritePlace: 'Courtyard & Veranda',
+      heroImg: 'assets/rohan_sweets.jpg',
+      audioPrompt: 'Aita, I brought fresh coconut pitha and laddu sweets for you!',
       gameId: 'who_is_this'
     },
     {
@@ -754,6 +762,17 @@ try {
   if (savedUser) {
     SMARAN_STATE.user = JSON.parse(savedUser);
   }
+  const savedRhythm = localStorage.getItem('smaran_daily_rhythm');
+  if (savedRhythm) {
+    SMARAN_STATE.rhythm = JSON.parse(savedRhythm);
+  }
+  const savedHydration = localStorage.getItem('smaran_hydration');
+  if (savedHydration) {
+    SMARAN_STATE.hydration = JSON.parse(savedHydration);
+  }
 } catch (e) {}
+
+// Alias for convenience
+SMARAN_STATE.reminders = SMARAN_STATE.rhythm;
 
 window.SMARAN_STATE = SMARAN_STATE;

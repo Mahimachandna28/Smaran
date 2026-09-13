@@ -184,49 +184,6 @@ class SmaranApp {
     this.setOfflineMode(false);
   }
 
-  // --- Memory Vault Rendering ---
-  renderMemoryVault(filterCat = 'all') {
-    const container = document.getElementById('memoryCardsGrid');
-    if (!container) return;
-
-    const list = (filterCat === 'all') 
-      ? SMARAN_STATE.memories 
-      : SMARAN_STATE.memories.filter(m => m.category === filterCat);
-
-    container.innerHTML = list.map(m => `
-      <div class="memory-card" id="memoryCard-${m.id}">
-        <div class="memory-img-box">
-          <img src="${this.getMemoryImg(m.id)}" alt="${m.name}" style="width: 100%; height: 100%; object-fit: cover;">
-          <span class="memory-tag-chip">${m.tag}</span>
-        </div>
-        <div class="memory-body">
-          <h3 class="memory-title">${m.name}</h3>
-          <div class="memory-relation">${m.relation}</div>
-          <p class="memory-story">${m.story}</p>
-          <div style="font-size: 0.95rem; color: #1b4d3e; font-weight: 700; margin-bottom: 1rem;">
-            🔊 Audio Note: ${m.audioNote}
-          </div>
-          <button class="btn-smaran btn-smaran-primary" onclick="smaranGames.launchGame('who_is_this')">
-            ✨ Play Memory Activity
-          </button>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  filterMemoryVault(cat, btnEl) {
-    document.querySelectorAll('.vault-cat-btn').forEach(b => b.classList.remove('active'));
-    if (btnEl) btnEl.classList.add('active');
-    this.renderMemoryVault(cat);
-  }
-
-  getMemoryImg(id) {
-    if (id === 'ananya') return 'assets/family_ananya.jpg';
-    if (id === 'teagarden') return 'assets/tea_gardens.jpg';
-    if (id === 'bihu') return 'assets/bihu_story.jpg';
-    return 'assets/brahmaputra.jpg';
-  }
-
   renderCaregiverDashboard() {
     const sessions = SMARAN_STATE.caregiver.recentSessions;
     const sessionListEl = document.getElementById('caregiverSessionList');
@@ -1030,48 +987,76 @@ class SmaranApp {
     const grid = document.getElementById('memoryCardsGrid');
     if (!grid || !SMARAN_STATE.memories) return;
 
+    // Calculate exact category counts
+    const allCount = SMARAN_STATE.memories.length;
+    const peopleCount = SMARAN_STATE.memories.filter(m => m.category === 'people').length;
+    const placesCount = SMARAN_STATE.memories.filter(m => m.category === 'places' && !m.tag.includes('Nature') && !m.tag.includes('Rivers')).length;
+    const momentsCount = SMARAN_STATE.memories.filter(m => m.category === 'moments').length;
+    const natureCount = SMARAN_STATE.memories.filter(m => m.tag.includes('Nature') || m.tag.includes('Rivers')).length;
+
+    // Update counter spans in filter buttons
+    const cAll = document.getElementById('vaultCountAll');
+    if (cAll) cAll.textContent = allCount;
+    const cPeople = document.getElementById('vaultCountPeople');
+    if (cPeople) cPeople.textContent = peopleCount;
+    const cPlaces = document.getElementById('vaultCountPlaces');
+    if (cPlaces) cPlaces.textContent = placesCount;
+    const cMoments = document.getElementById('vaultCountMoments');
+    if (cMoments) cMoments.textContent = momentsCount;
+    const cNature = document.getElementById('vaultCountNature');
+    if (cNature) cNature.textContent = natureCount;
+
     let items = SMARAN_STATE.memories;
     if (filterCategory !== 'all') {
       if (filterCategory === 'nature') {
-        items = items.filter(m => m.category === 'places' && m.tag.includes('Nature'));
+        items = items.filter(m => m.tag.includes('Nature') || m.tag.includes('Rivers'));
+      } else if (filterCategory === 'places') {
+        items = items.filter(m => m.category === 'places' && !m.tag.includes('Nature') && !m.tag.includes('Rivers'));
       } else {
         items = items.filter(m => m.category === filterCategory);
       }
     }
 
-    grid.innerHTML = items.map(m => `
-      <div class="memory-vault-card" id="mem_${m.id}">
-        <div class="vault-card-media">
-          <img src="${m.heroImg}" alt="${m.name}" class="vault-card-img" onerror="this.src='assets/tea_gardens.jpg'">
-          <span class="vault-state-badge">📍 ${m.stateName || 'North-East'}</span>
-          <span class="vault-cat-badge">${m.tag || '❤️ Memory'}</span>
-        </div>
-        <div class="vault-card-body">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.35rem; gap: 0.5rem;">
-            <div>
-              <h3 class="vault-card-title">${m.name}</h3>
-              ${m.nativeName ? `<div class="vault-card-native">${m.nativeName}</div>` : ''}
+    const currentLang = window.i18n ? window.i18n.currentLang : 'en';
+
+    grid.innerHTML = items.map(m => {
+      const displayName = (currentLang === 'as' && m.nativeName) ? m.nativeName : m.name;
+      const displaySubtitle = (currentLang === 'as' && m.nativeName) ? m.name : m.nativeName;
+
+      return `
+        <div class="memory-vault-card" id="mem_${m.id}">
+          <div class="vault-card-media">
+            <img src="${m.heroImg}" alt="${m.name}" class="vault-card-img" onerror="this.src='assets/tea_gardens.jpg'">
+            <span class="vault-state-badge">📍 ${m.stateName || 'North-East'}</span>
+            <span class="vault-cat-badge">${m.tag || '❤️ Memory'}</span>
+          </div>
+          <div class="vault-card-body">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.35rem; gap: 0.5rem;">
+              <div>
+                <h3 class="vault-card-title">${displayName}</h3>
+                ${displaySubtitle ? `<div class="vault-card-native">${displaySubtitle}</div>` : ''}
+              </div>
+              <span class="vault-rel-pill">${m.relation}</span>
             </div>
-            <span class="vault-rel-pill">${m.relation}</span>
-          </div>
 
-          <p class="vault-card-story">${m.story}</p>
+            <p class="vault-card-story">${m.story}</p>
 
-          <div class="vault-audio-snippet">
-            <span>💬 <em>"${m.audioPrompt}"</em></span>
-          </div>
+            <div class="vault-audio-snippet">
+              <span>💬 <em>"${m.audioPrompt}"</em></span>
+            </div>
 
-          <div class="vault-card-footer">
-            <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="smaranApp.speakMemoryStory('${m.id}')" title="Listen Spoken Story">
-              🔊 Listen Story
-            </button>
-            <button class="btn-smaran btn-smaran-primary btn-smaran-pill-sm" onclick="smaranGames.launchGame('${m.gameId || 'family_match'}')">
-              🌿 Play Memory Game →
-            </button>
+            <div class="vault-card-footer">
+              <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="smaranApp.speakMemoryStory('${m.id}')" title="Listen Spoken Story">
+                🔊 Listen Story
+              </button>
+              <button class="btn-smaran btn-smaran-primary btn-smaran-pill-sm" onclick="smaranGames.launchGame('${m.gameId || 'family_match'}')">
+                🌿 Play Memory Game →
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   speakMemoryStory(memoryId) {
@@ -1080,7 +1065,11 @@ class SmaranApp {
 
     if (window.smaranAudio) window.smaranAudio.playTapSound();
 
-    const textToSpeak = `${m.name}. ${m.story}`;
+    const currentLang = window.i18n ? window.i18n.currentLang : 'en';
+    const textToSpeak = (currentLang === 'as' && m.nativeName) 
+      ? `${m.nativeName}. ${m.story}`
+      : `${m.name}. ${m.story}`;
+
     if (window.smaranVoice) {
       window.smaranVoice.speakTTS(textToSpeak);
     } else {
@@ -1097,14 +1086,110 @@ class SmaranApp {
   // ==========================================
   // ENHANCED DAILY RHYTHM & CIRCADIAN ENGINE
   // ==========================================
-  renderDailyRhythm(filterPeriod = 'all') {
+  startCircadianClock() {
+    this.updateCircadianClock();
+    if (!this.clockTimer) {
+      this.clockTimer = setInterval(() => {
+        this.updateCircadianClock();
+      }, 10000);
+    }
+  }
+
+  updateCircadianClock() {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const dateStr = now.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+    const clockEl = document.getElementById('rhythmLiveClock');
+    if (clockEl) clockEl.textContent = timeStr;
+
+    const dateEl = document.getElementById('rhythmDateDisplay');
+    if (dateEl) dateEl.textContent = `Tezpur / Guwahati • ${dateStr}`;
+
+    const hour = now.getHours();
+    let phaseName = '☀️ Midday & Afternoon';
+    let phaseIcon = '☀️';
+    if (hour >= 5 && hour < 12) {
+      phaseName = '🌅 Morning Dawn (পুৱা)';
+      phaseIcon = '🌅';
+    } else if (hour >= 12 && hour < 17) {
+      phaseName = '☀️ Midday Sunshine (দুপৰীয়া)';
+      phaseIcon = '☀️';
+    } else if (hour >= 17 && hour < 20) {
+      phaseName = '🌇 Golden Sunset (গধূলি)';
+      phaseIcon = '🌇';
+    } else {
+      phaseName = '🌙 Night Serenity (ৰাতিৰ শান্তি)';
+      phaseIcon = '🌙';
+    }
+
+    const phaseEl = document.getElementById('rhythmPhaseBadge');
+    if (phaseEl) {
+      phaseEl.innerHTML = `<span>${phaseIcon} ${phaseName}</span>`;
+    }
+
+    this.renderNextUpSpotlight();
+  }
+
+  renderNextUpSpotlight() {
+    const container = document.getElementById('rhythmNextUpCard');
+    if (!container || !SMARAN_STATE.rhythm) return;
+
+    // Find the next incomplete reminder
+    const nextItem = SMARAN_STATE.rhythm.find(r => !r.completed);
+
+    if (!nextItem) {
+      container.innerHTML = `
+        <div class="next-up-all-done">
+          <div style="font-size: 2.2rem; margin-bottom: 0.25rem;">🌸</div>
+          <div style="font-weight: 800; font-size: 1.15rem; color: #17382d;">All Daily Moments Completed!</div>
+          <div style="font-size: 0.9rem; color: #556b61; margin-top: 0.2rem;">You've had a peaceful, nourishing day, Meera. Rest well and enjoy the evening breeze.</div>
+        </div>
+      `;
+      return;
+    }
+
+    const lang = window.i18n ? window.i18n.currentLang : 'en';
+    const displayTitle = (lang === 'as' && nextItem.nativeTitle) ? nextItem.nativeTitle : nextItem.title;
+
+    container.innerHTML = `
+      <div class="next-up-box">
+        <div class="next-up-tag-row">
+          <span class="next-up-pulse-badge">🔔 UPCOMING NEXT MOMENT</span>
+          <span class="next-up-time-pill">⏰ ${nextItem.time}</span>
+        </div>
+        <div class="next-up-content">
+          <div class="next-up-icon">${nextItem.icon}</div>
+          <div class="next-up-details">
+            <div class="next-up-title">${displayTitle}</div>
+            <div class="next-up-sub">${nextItem.subtitle}</div>
+          </div>
+        </div>
+        <div class="next-up-actions">
+          <button class="btn-smaran btn-smaran-primary btn-smaran-pill-sm" onclick="smaranApp.toggleRhythmComplete('${nextItem.id}')">
+            ✓ Take Dose / Mark Done
+          </button>
+          <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="smaranApp.speakRhythmVoice('${nextItem.id}')" title="Listen Spoken Reminder">
+            🔊 Listen
+          </button>
+          <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="smaranApp.snoozeRhythm('${nextItem.id}')" title="Snooze 15 minutes">
+            ⏰ +15m
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  renderDailyRhythm() {
     if (!SMARAN_STATE.rhythm) return;
+
+    this.startCircadianClock();
 
     const total = SMARAN_STATE.rhythm.length;
     const completed = SMARAN_STATE.rhythm.filter(r => r.completed).length;
-    const percentage = Math.round((completed / total) * 100);
+    const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-    // Update Counts on Filter Pills
+    // 1. Update Time-of-Day Filter Pill Counts
     const countAll = document.getElementById('countAll');
     if (countAll) countAll.textContent = total;
 
@@ -1115,7 +1200,7 @@ class SmaranApp {
       }
     });
 
-    // 1. Render Live Wellness Progress Card
+    // 2. Render Live Wellness Progress Card
     const progressCard = document.getElementById('rhythmProgressCard');
     if (progressCard) {
       let encouragement = "You're having a peaceful, balanced day, Meera ❤️";
@@ -1139,18 +1224,38 @@ class SmaranApp {
       `;
     }
 
-    // 2. Render Dedicated View Rhythm List
+    // 3. Render Daily Hydration Compass
+    this.renderHydrationCompass();
+
+    // 4. Render Dedicated View Rhythm List with Dual Filter
     const fullList = document.getElementById('fullDailyRhythmList');
     if (fullList) {
       let items = SMARAN_STATE.rhythm;
-      if (filterPeriod !== 'all') {
-        items = items.filter(r => r.period === filterPeriod);
+
+      const activePeriod = this.activeRhythmPeriod || 'all';
+      const activeCat = this.activeRhythmCategory || 'all';
+
+      if (activePeriod !== 'all') {
+        items = items.filter(r => r.period === activePeriod);
+      }
+      if (activeCat !== 'all') {
+        items = items.filter(r => r.category === activeCat);
       }
 
-      fullList.innerHTML = items.map(item => this.buildRhythmItemHtml(item)).join('');
+      if (items.length === 0) {
+        fullList.innerHTML = `
+          <div class="rhythm-empty-state">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🌸</div>
+            <div style="font-weight: 800; font-size: 1.15rem; color: #17382d;">No reminders for this category</div>
+            <p style="color: #62756c; margin-top: 0.25rem;">Use "+ Add Daily Reminder" to schedule a personalized moment.</p>
+          </div>
+        `;
+      } else {
+        fullList.innerHTML = items.map(item => this.buildRhythmItemHtml(item)).join('');
+      }
     }
 
-    // 3. Render Homepage Rhythm Preview (First 5 items)
+    // 5. Render Homepage Rhythm Preview (First 5 items)
     const homeList = document.getElementById('homeDailyRhythmList');
     if (homeList) {
       const previewItems = SMARAN_STATE.rhythm.slice(0, 5);
@@ -1158,13 +1263,122 @@ class SmaranApp {
     }
   }
 
+  renderHydrationCompass() {
+    const container = document.getElementById('rhythmHydrationCard');
+    if (!container) return;
+
+    const hyd = SMARAN_STATE.hydration || { current: 5, target: 8, glassSizeMl: 250, lastLoggedAt: '11:15 AM' };
+    const currentGlasses = hyd.current || 0;
+    const targetGlasses = hyd.target || 8;
+    const currentMl = currentGlasses * (hyd.glassSizeMl || 250);
+    const targetMl = targetGlasses * (hyd.glassSizeMl || 250);
+    const hydPercent = Math.min(100, Math.round((currentGlasses / targetGlasses) * 100));
+
+    let glassesHtml = '';
+    for (let i = 1; i <= targetGlasses; i++) {
+      const isFilled = i <= currentGlasses;
+      glassesHtml += `
+        <button class="hydration-cup-btn ${isFilled ? 'filled' : 'empty'}" 
+                onclick="smaranApp.toggleHydrationCup(${i})" 
+                title="${isFilled ? `Glass ${i}: Logged (${i * 250} ml)` : `Click to log glass ${i}`}">
+          <span class="cup-icon">${isFilled ? '💧' : '🥛'}</span>
+          <span class="cup-num">${i * 250}ml</span>
+        </button>
+      `;
+    }
+
+    container.innerHTML = `
+      <div class="hydration-top-row">
+        <div>
+          <div class="hydration-badge">💧 DAILY HYDRATION COMPASS</div>
+          <h3 class="hydration-title">Water, Warm Tea & Gentle Fluids</h3>
+          <p class="hydration-sub">Essential cognitive health & alertness for Meera • Target: 2.0 Liters daily</p>
+        </div>
+        <div class="hydration-metric-box">
+          <div class="hydration-metric-num">${currentGlasses} / ${targetGlasses} <span style="font-size: 1rem; font-weight: 700; color: #287a4a;">Glasses</span></div>
+          <div class="hydration-metric-sub">${currentMl} ml of ${targetMl} ml (${hydPercent}%) • Last: ${hyd.lastLoggedAt || 'Just now'}</div>
+        </div>
+      </div>
+
+      <div class="hydration-cups-row">
+        ${glassesHtml}
+      </div>
+
+      <div class="hydration-footer-actions">
+        <button class="btn-smaran btn-smaran-primary btn-smaran-pill-sm" onclick="smaranApp.logHydration('water')">
+          + 1 Glass Water (250 ml) 💧
+        </button>
+        <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="smaranApp.logHydration('tea')">
+          + Warm Herbal Tea 🍵
+        </button>
+        <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="smaranApp.speakTTSGuidance('Meera, drinking fresh water keeps your mind clear, refreshed, and peaceful. Take a sip of water now.')">
+          🔊 Hydration Audio Prompt
+        </button>
+      </div>
+    `;
+  }
+
+  logHydration(type = 'water') {
+    if (!SMARAN_STATE.hydration) {
+      SMARAN_STATE.hydration = { current: 0, target: 8, glassSizeMl: 250, lastLoggedAt: '11:00 AM' };
+    }
+
+    if (SMARAN_STATE.hydration.current < SMARAN_STATE.hydration.target + 4) {
+      SMARAN_STATE.hydration.current += 1;
+    }
+
+    const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    SMARAN_STATE.hydration.lastLoggedAt = nowStr;
+
+    try {
+      localStorage.setItem('smaran_hydration', JSON.stringify(SMARAN_STATE.hydration));
+    } catch (e) {}
+
+    if (window.smaranAudio) window.smaranAudio.playSuccessChime();
+
+    const label = type === 'tea' ? 'Warm Assam Herbal Tea' : 'Fresh Glass of Water';
+    this.showToast(`💧 Wonderful, Meera! ${label} logged (+250 ml). Total: ${SMARAN_STATE.hydration.current * 250} ml.`);
+
+    this.renderHydrationCompass();
+  }
+
+  toggleHydrationCup(cupIndex) {
+    if (!SMARAN_STATE.hydration) return;
+
+    if (SMARAN_STATE.hydration.current >= cupIndex) {
+      SMARAN_STATE.hydration.current = cupIndex - 1;
+    } else {
+      SMARAN_STATE.hydration.current = cupIndex;
+    }
+
+    const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    SMARAN_STATE.hydration.lastLoggedAt = nowStr;
+
+    try {
+      localStorage.setItem('smaran_hydration', JSON.stringify(SMARAN_STATE.hydration));
+    } catch (e) {}
+
+    if (window.smaranAudio) window.smaranAudio.playTapSound();
+    this.renderHydrationCompass();
+  }
+
+  speakTTSGuidance(text) {
+    if (window.smaranVoice) {
+      window.smaranVoice.speakTTS(text);
+    } else {
+      alert(`🔊 SMARAN Audio Guidance:\n\n"${text}"`);
+    }
+  }
+
   buildRhythmItemHtml(item, isCompact = false) {
     const isCompleted = !!item.completed;
     const lang = window.i18n ? window.i18n.currentLang : 'en';
     const displayTitle = (lang === 'as' && item.nativeTitle) ? item.nativeTitle : item.title;
+    const isCustom = item.id.startsWith('r_custom_');
+    const isMedication = item.category === 'Health';
 
     return `
-      <div class="timeline-flow-item ${isCompleted ? 'is-completed' : ''}" id="rhythm_${item.id}">
+      <div class="timeline-flow-item ${isCompleted ? 'is-completed' : ''} ${isMedication ? 'is-medication' : ''}" id="rhythm_${item.id}">
         <div class="timeline-time-badge">
           <span>${item.time}</span>
           <span class="timeline-period-label">${item.periodLabel || item.period}</span>
@@ -1173,11 +1387,17 @@ class SmaranApp {
         <div class="timeline-content-block">
           <div class="timeline-icon-circle">${item.icon}</div>
           <div class="timeline-text-body">
-            <div class="timeline-title-text">${displayTitle}</div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="timeline-title-text">${displayTitle}</span>
+              ${isMedication ? `<span class="med-dose-pill">💊 Prescription Dose</span>` : ''}
+            </div>
             <div class="timeline-sub-text">${item.subtitle}</div>
-            <span class="timeline-category-tag" style="background: ${item.categoryColor || '#1b4d3e'}18; color: ${item.categoryColor || '#1b4d3e'};">
-              ${item.category}
-            </span>
+            <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.25rem; flex-wrap: wrap;">
+              <span class="timeline-category-tag" style="background: ${item.categoryColor || '#1b4d3e'}18; color: ${item.categoryColor || '#1b4d3e'};">
+                ${item.category}
+              </span>
+              ${isCompleted && item.completedAt ? `<span class="timeline-completed-badge">✓ Done at ${item.completedAt}</span>` : ''}
+            </div>
           </div>
         </div>
 
@@ -1185,18 +1405,39 @@ class SmaranApp {
           <button class="btn-rhythm-voice" onclick="smaranApp.speakRhythmVoice('${item.id}')" title="Listen Spoken Reminder">
             🔊
           </button>
-          <button class="btn-rhythm-toggle ${isCompleted ? 'done' : 'pending'}" onclick="smaranApp.toggleRhythmComplete('${item.id}')">
-            ${isCompleted ? `✓ Completed ${item.completedAt ? '(' + item.completedAt + ')' : ''}` : '○ Mark Done'}
+          ${item.soundType ? `
+            <button class="btn-rhythm-sound" onclick="smaranApp.playRhythmSound('${item.soundType}', '${item.title}')" title="Play Calming Soundscape (${item.soundType})">
+              🎵
+            </button>
+          ` : ''}
+          <button class="btn-rhythm-snooze" onclick="smaranApp.snoozeRhythm('${item.id}')" title="Snooze 15 minutes">
+            ⏰ +15m
           </button>
+          <button class="btn-rhythm-toggle ${isCompleted ? 'done' : 'pending'}" onclick="smaranApp.toggleRhythmComplete('${item.id}')">
+            ${isCompleted ? `✓ Done` : '○ Mark Done'}
+          </button>
+          ${isCustom ? `
+            <button class="btn-rhythm-del" onclick="smaranApp.deleteRhythm('${item.id}')" title="Remove reminder">
+              🗑️
+            </button>
+          ` : ''}
         </div>
       </div>
     `;
   }
 
   filterRhythm(period, btnElement) {
+    this.activeRhythmPeriod = period;
     document.querySelectorAll('.rhythm-filter-pill').forEach(b => b.classList.remove('active'));
     if (btnElement) btnElement.classList.add('active');
-    this.renderDailyRhythm(period);
+    this.renderDailyRhythm();
+  }
+
+  filterRhythmCategory(cat, btnElement) {
+    this.activeRhythmCategory = cat;
+    document.querySelectorAll('.rhythm-cat-chip').forEach(b => b.classList.remove('active'));
+    if (btnElement) btnElement.classList.add('active');
+    this.renderDailyRhythm();
   }
 
   toggleRhythmComplete(rhythmId) {
@@ -1208,13 +1449,81 @@ class SmaranApp {
       item.completedAt = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       if (window.smaranAudio) window.smaranAudio.playSuccessChime();
       this.showToast(`🌸 Wonderful! "${item.title}" marked completed.`);
+
+      // Log to caregiver recent sessions
+      if (SMARAN_STATE.caregiver && SMARAN_STATE.caregiver.recentSessions) {
+        SMARAN_STATE.caregiver.recentSessions.unshift({
+          game: `Routine: ${item.title}`,
+          difficulty: item.category,
+          accuracy: 'Completed',
+          time: item.completedAt,
+          hints: 0,
+          date: 'Today'
+        });
+      }
     } else {
       item.completedAt = null;
       if (window.smaranAudio) window.smaranAudio.playTapSound();
+      this.showToast(`↩ "${item.title}" marked pending.`);
     }
 
-    const activeFilter = document.querySelector('.rhythm-filter-pill.active')?.getAttribute('data-period') || 'all';
-    this.renderDailyRhythm(activeFilter);
+    try {
+      localStorage.setItem('smaran_daily_rhythm', JSON.stringify(SMARAN_STATE.rhythm));
+    } catch (e) {}
+
+    this.renderDailyRhythm();
+    this.renderNextUpSpotlight();
+    this.renderCaregiverDashboard();
+  }
+
+  snoozeRhythm(rhythmId) {
+    const item = SMARAN_STATE.rhythm.find(r => r.id === rhythmId);
+    if (!item) return;
+
+    if (window.smaranAudio) window.smaranAudio.playTapSound();
+
+    // Parse time and add 15 minutes
+    const now = new Date();
+    now.setMinutes(now.getMinutes() + 15);
+    const newTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    item.time = newTime;
+    item.subtitle = `[Snoozed to ${newTime}] ${item.subtitle.replace(/\[Snoozed to [^\]]+\]\s*/g, '')}`;
+
+    try {
+      localStorage.setItem('smaran_daily_rhythm', JSON.stringify(SMARAN_STATE.rhythm));
+    } catch (e) {}
+
+    this.showToast(`⏰ Snoozed "${item.title}" by 15 minutes (New time: ${newTime}).`);
+    this.renderDailyRhythm();
+    this.renderNextUpSpotlight();
+  }
+
+  deleteRhythm(rhythmId) {
+    const item = SMARAN_STATE.rhythm.find(r => r.id === rhythmId);
+    if (!item) return;
+
+    if (!confirm(`Are you sure you want to remove the reminder "${item.title}"?`)) return;
+
+    SMARAN_STATE.rhythm = SMARAN_STATE.rhythm.filter(r => r.id !== rhythmId);
+    SMARAN_STATE.reminders = SMARAN_STATE.rhythm;
+
+    try {
+      localStorage.setItem('smaran_daily_rhythm', JSON.stringify(SMARAN_STATE.rhythm));
+    } catch (e) {}
+
+    if (window.smaranAudio) window.smaranAudio.playTapSound();
+    this.showToast(`🗑️ Reminder "${item.title}" removed.`);
+    this.renderDailyRhythm();
+  }
+
+  playRhythmSound(soundType, title) {
+    if (window.smaranAudio) {
+      window.smaranAudio.playSound(soundType);
+      this.showToast(`🎵 Playing calming soundscape for: ${title}`);
+    } else {
+      alert(`🎵 Sound Cue: Playing gentle ${soundType} ambient audio.`);
+    }
   }
 
   speakRhythmVoice(rhythmId) {
@@ -1223,16 +1532,106 @@ class SmaranApp {
 
     if (window.smaranAudio) window.smaranAudio.playTapSound();
 
+    const lang = window.i18n ? window.i18n.currentLang : 'en';
+    const textToSpeak = (lang === 'as' && item.nativeTitle)
+      ? `মীনাক্ষী বা মীৰা দেৱী, এয়া ${item.time} হৈছে। ${item.nativeTitle}ৰ সময়। ${item.subtitle}`
+      : (item.voiceText || `Meera, it is ${item.time}. Time for ${item.title}. ${item.subtitle}`);
+
     if (window.smaranVoice) {
-      window.smaranVoice.speakTTS(item.voiceText || `${item.time}. Time for ${item.title}.`);
+      window.smaranVoice.speakTTS(textToSpeak);
     } else {
-      alert(`🔊 SMARAN Gentle Reminder:\n\n"${item.voiceText}"`);
+      alert(`🔊 SMARAN Gentle Reminder:\n\n"${textToSpeak}"`);
+    }
+  }
+
+  readFullDailySchedule() {
+    if (!SMARAN_STATE.rhythm) return;
+
+    const remaining = SMARAN_STATE.rhythm.filter(r => !r.completed);
+    const completed = SMARAN_STATE.rhythm.filter(r => r.completed).length;
+
+    let message = `Good day, Meera. You have completed ${completed} daily moments so far. `;
+    if (remaining.length === 0) {
+      message += "You have successfully completed all your activities for today! Enjoy your peaceful rest.";
+    } else {
+      message += `You have ${remaining.length} upcoming moments. Next is: ${remaining[0].title} at ${remaining[0].time}.`;
+    }
+
+    if (window.smaranVoice) {
+      window.smaranVoice.speakTTS(message);
+    } else {
+      alert(`🔊 Daily Schedule Overview:\n\n${message}`);
     }
   }
 
   openAddReminderModal() {
     const modal = document.getElementById('addReminderModal');
     if (modal) modal.classList.add('active');
+  }
+
+  applyReminderPreset(presetKey) {
+    const titleInput = document.getElementById('newReminderTitle');
+    const timeInput = document.getElementById('newReminderTime');
+    const periodInput = document.getElementById('newReminderPeriod');
+    const catInput = document.getElementById('newReminderCategory');
+    const voiceInput = document.getElementById('newReminderVoice');
+
+    const presets = {
+      coconut_water: {
+        title: 'Afternoon Fresh Coconut Water & Hydration',
+        time: '3:30 PM',
+        period: 'afternoon',
+        cat: 'Nourishment',
+        voice: 'Meera, it is 3:30 PM. Time to enjoy a fresh, cooling glass of coconut water on the veranda.'
+      },
+      bp_check: {
+        title: 'Morning Blood Pressure & Calcium Tablet',
+        time: '9:00 AM',
+        period: 'morning',
+        cat: 'Health',
+        voice: 'Meera, it is 9:00 AM. Time for your morning blood pressure check and calcium tablet.'
+      },
+      garden_walk: {
+        title: 'Veranda & Kopou Orchid Evening Walk',
+        time: '5:00 PM',
+        period: 'evening',
+        cat: 'Movement',
+        voice: 'The sunset breeze is calm, Meera. Time for a peaceful stroll along the veranda orchid garden.'
+      },
+      temple_prayers: {
+        title: 'Evening Sandhya Aarti & Diya Lighting',
+        time: '6:30 PM',
+        period: 'evening',
+        cat: 'Rest',
+        voice: 'Meera, it is 6:30 PM. Time for the evening prayer, lighting the earthen diya, and feeling peaceful.'
+      },
+      family_call: {
+        title: 'Video Call with Grandson Rohan & Ananya',
+        time: '7:30 PM',
+        period: 'evening',
+        cat: 'Family',
+        voice: 'Grandson Rohan and Ananya will be calling for your evening family conversation soon!'
+      },
+      warm_milk: {
+        title: 'Warm Haldi Milk & Deep Night Sleep',
+        time: '8:45 PM',
+        period: 'night',
+        cat: 'Rest',
+        voice: 'Meera, it is 8:45 PM. Drink your warm turmeric milk and get ready for a deep, peaceful sleep.'
+      }
+    };
+
+    const p = presets[presetKey];
+    if (p) {
+      if (titleInput) titleInput.value = p.title;
+      if (timeInput) timeInput.value = p.time;
+      if (periodInput) periodInput.value = p.period;
+      if (catInput) catInput.value = p.cat;
+      if (voiceInput) voiceInput.value = p.voice;
+
+      if (window.smaranAudio) window.smaranAudio.playTapSound();
+      this.showToast(`⚡ Preset applied: "${p.title}"`);
+    }
   }
 
   handleAddCustomReminder(e) {
@@ -1257,22 +1656,28 @@ class SmaranApp {
       completed: false,
       completedAt: null,
       category: category,
-      categoryColor: '#1b4d3e',
+      categoryColor: category === 'Health' ? '#287a4a' : (category === 'Nourishment' ? '#d4a359' : '#1b4d3e'),
       voiceText: voiceText || `Meera, it is ${time}. Reminder for ${title}.`,
-      soundType: 'chime'
+      soundType: category === 'Nourishment' ? 'tea' : 'chime'
     };
 
     SMARAN_STATE.rhythm.push(newReminder);
+    SMARAN_STATE.reminders = SMARAN_STATE.rhythm;
+
+    try {
+      localStorage.setItem('smaran_daily_rhythm', JSON.stringify(SMARAN_STATE.rhythm));
+    } catch (err) {}
+
     document.getElementById('addReminderModal').classList.remove('active');
     document.getElementById('newReminderTitle').value = '';
     document.getElementById('newReminderTime').value = '';
     document.getElementById('newReminderVoice').value = '';
 
     if (window.smaranAudio) window.smaranAudio.playSuccessChime();
-    this.showToast(`✓ New daily reminder "${title}" added!`);
+    this.showToast(`✓ New daily reminder "${title}" added and saved!`);
 
-    const activeFilter = document.querySelector('.rhythm-filter-pill.active')?.getAttribute('data-period') || 'all';
-    this.renderDailyRhythm(activeFilter);
+    this.renderDailyRhythm();
+    this.renderNextUpSpotlight();
   }
 
   showToast(message) {

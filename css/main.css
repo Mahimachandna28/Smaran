@@ -892,6 +892,429 @@ body.high-contrast .btn-smaran-ghost {
   .rhythm-progress-stat {
     width: 100%;
   }
+/* Pulsing Green Dot */
+.pulse-green-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #287a4a;
+  display: inline-block;
+  box-shadow: 0 0 0 0 rgba(40, 122, 74, 0.7);
+  animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(40, 122, 74, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(40, 122, 74, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(40, 122, 74, 0); }
+}
+
+/* Circadian Clock & Next Up Showcase */
+.rhythm-circadian-card {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.circadian-clock-block {
+  background: linear-gradient(135deg, #1b4d3e 0%, #17382d 100%);
+  color: #ffffff;
+  border-radius: 24px;
+  padding: 1.75rem;
+  box-shadow: 0 8px 24px rgba(27, 77, 62, 0.16);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.circadian-clock-block::after {
+  content: '⏰';
+  position: absolute;
+  right: -10px;
+  bottom: -15px;
+  font-size: 6rem;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.circadian-time-display {
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: #f7faf8;
+}
+
+.circadian-date-display {
+  font-size: 0.95rem;
+  color: #b7ded0;
+  margin-top: 0.4rem;
+  font-weight: 600;
+}
+
+.circadian-phase-badge {
+  margin-top: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  padding: 0.4rem 0.9rem;
+  border-radius: 9999px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #e6f7ef;
+  width: fit-content;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.circadian-spotlight-block {
+  background: #ffffff;
+  border: 2px solid #d4ede1;
+  border-radius: 24px;
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 6px 20px rgba(27, 77, 62, 0.06);
+  display: flex;
+  align-items: center;
+}
+
+.next-up-box {
+  width: 100%;
+}
+
+.next-up-tag-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.next-up-pulse-badge {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #c8644a;
+  background: #fff0eb;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid #ffd4c7;
+}
+
+.next-up-time-pill {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #1b4d3e;
+  background: #eef7f2;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+}
+
+.next-up-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.next-up-icon {
+  font-size: 2.4rem;
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  background: #eef7f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1.5px solid #d0ebd8;
+}
+
+.next-up-details {
+  flex: 1;
+}
+
+.next-up-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #17382d;
+  line-height: 1.25;
+}
+
+.next-up-sub {
+  font-size: 0.95rem;
+  color: #62756c;
+  margin-top: 0.2rem;
+  line-height: 1.35;
+}
+
+.next-up-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.next-up-all-done {
+  text-align: center;
+  padding: 1rem 0;
+  width: 100%;
+}
+
+/* Daily Hydration Compass Card */
+.rhythm-hydration-card {
+  background: linear-gradient(135deg, #f3f9fc 0%, #eaf5f9 100%);
+  border: 2px solid #cfe6f0;
+  border-radius: 24px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.75rem;
+  box-shadow: 0 4px 16px rgba(43, 108, 176, 0.05);
+}
+
+.hydration-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.hydration-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #2b6cb0;
+  margin-bottom: 0.25rem;
+}
+
+.hydration-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #1a365d;
+}
+
+.hydration-sub {
+  font-size: 0.9rem;
+  color: #4a5568;
+  margin-top: 0.2rem;
+}
+
+.hydration-metric-box {
+  background: #ffffff;
+  border: 1.5px solid #bee3f8;
+  border-radius: 16px;
+  padding: 0.75rem 1.25rem;
+  text-align: right;
+  min-width: 160px;
+}
+
+.hydration-metric-num {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #2b6cb0;
+  line-height: 1.1;
+}
+
+.hydration-metric-sub {
+  font-size: 0.8rem;
+  color: #718096;
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+.hydration-cups-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.hydration-cup-btn {
+  flex: 1;
+  min-width: 60px;
+  background: #ffffff;
+  border: 2px solid #bee3f8;
+  border-radius: 14px;
+  padding: 0.6rem 0.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hydration-cup-btn:hover {
+  transform: translateY(-2px);
+  border-color: #3182ce;
+}
+
+.hydration-cup-btn.filled {
+  background: #ebf8ff;
+  border-color: #3182ce;
+  box-shadow: 0 2px 8px rgba(49, 130, 206, 0.2);
+}
+
+.hydration-cup-btn .cup-icon {
+  font-size: 1.4rem;
+}
+
+.hydration-cup-btn .cup-num {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #4a5568;
+}
+
+.hydration-cup-btn.filled .cup-num {
+  color: #2b6cb0;
+}
+
+.hydration-footer-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+/* Category Filter Chips */
+.rhythm-category-row {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.rhythm-cat-chip {
+  background: #ffffff;
+  border: 1px solid #d8e5dc;
+  padding: 0.4rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #4a6356;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.rhythm-cat-chip:hover {
+  background: #f0f7f3;
+  border-color: #1b4d3e;
+  color: #1b4d3e;
+}
+
+.rhythm-cat-chip.active {
+  background: #eef7f2;
+  border-color: #1b4d3e;
+  color: #1b4d3e;
+  font-weight: 800;
+  box-shadow: 0 2px 6px rgba(27, 77, 62, 0.1);
+}
+
+.rhythm-empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: #ffffff;
+  border: 2px dashed #d8e5dc;
+  border-radius: 24px;
+}
+
+/* Medication Special Highlight */
+.timeline-flow-item.is-medication {
+  border-left: 5px solid #287a4a;
+}
+
+.med-dose-pill {
+  background: #eef7f2;
+  border: 1px solid #c8e4d3;
+  color: #1b4d3e;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.timeline-completed-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #287a4a;
+  background: #e6f4ec;
+  padding: 0.15rem 0.55rem;
+  border-radius: 9999px;
+}
+
+.btn-rhythm-sound, .btn-rhythm-snooze, .btn-rhythm-del {
+  background: #f4f8f5;
+  border: 1.5px solid #c8e0d1;
+  color: #1b4d3e;
+  height: 44px;
+  padding: 0 0.85rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-rhythm-sound:hover, .btn-rhythm-snooze:hover {
+  background: #1b4d3e;
+  color: #ffffff;
+  border-color: #1b4d3e;
+  transform: scale(1.04);
+}
+
+.btn-rhythm-del {
+  border-color: #ffd0c7;
+  background: #fff5f3;
+  color: #c53030;
+}
+
+.btn-rhythm-del:hover {
+  background: #e53e3e;
+  color: #ffffff;
+  border-color: #e53e3e;
+}
+
+/* Preset Chips inside Modal */
+.rhythm-preset-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.preset-chip {
+  background: #f0f7f2;
+  border: 1px solid #cce5d5;
+  border-radius: 9999px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1b4d3e;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.preset-chip:hover {
+  background: #1b4d3e;
+  color: #ffffff;
+  border-color: #1b4d3e;
+}
+
+@media (max-width: 900px) {
+  .rhythm-circadian-card {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ==========================================

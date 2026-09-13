@@ -295,11 +295,11 @@
 
       <!-- Category Filter Pills -->
       <div class="vault-filters-bar">
-        <button class="vault-filter-btn active" data-category="all" onclick="smaranApp.filterMemoryVault('all', this)">🌟 All Memories (15)</button>
-        <button class="vault-filter-btn" data-category="people" onclick="smaranApp.filterMemoryVault('people', this)">❤️ Family & Kin (2)</button>
-        <button class="vault-filter-btn" data-category="places" onclick="smaranApp.filterMemoryVault('places', this)">🏡 Places & Heritage (5)</button>
-        <button class="vault-filter-btn" data-category="moments" onclick="smaranApp.filterMemoryVault('moments', this)">🎉 Cultural Festivals (4)</button>
-        <button class="vault-filter-btn" data-category="nature" onclick="smaranApp.filterMemoryVault('nature', this)">🌿 Nature & Rivers (4)</button>
+        <button class="vault-filter-btn active" data-category="all" onclick="smaranApp.filterMemoryVault('all', this)">🌟 All Memories (<span id="vaultCountAll">15</span>)</button>
+        <button class="vault-filter-btn" data-category="people" onclick="smaranApp.filterMemoryVault('people', this)">❤️ Family & Kin (<span id="vaultCountPeople">2</span>)</button>
+        <button class="vault-filter-btn" data-category="places" onclick="smaranApp.filterMemoryVault('places', this)">🏡 Places & Heritage (<span id="vaultCountPlaces">5</span>)</button>
+        <button class="vault-filter-btn" data-category="moments" onclick="smaranApp.filterMemoryVault('moments', this)">🎉 Cultural Festivals (<span id="vaultCountMoments">4</span>)</button>
+        <button class="vault-filter-btn" data-category="nature" onclick="smaranApp.filterMemoryVault('nature', this)">🌿 Nature & Rivers (<span id="vaultCountNature">4</span>)</button>
       </div>
 
       <!-- Grid of Memory Cards -->
@@ -312,20 +312,44 @@
     <!-- VIEW 5: REMINDERS / MY DAY (DEDICATED HUB) -->
     <!-- ========================================== -->
     <section class="app-view" id="view-reminders">
+      
+      <!-- Rhythm Top Action Header -->
       <div class="rhythm-header-bar">
         <div>
           <div class="rhythm-live-pill">
-            <span style="width: 8px; height: 8px; border-radius: 50%; background: #287a4a; display: inline-block;"></span>
+            <span class="pulse-green-dot"></span>
             <span>CIRCADIAN SYNC ACTIVE</span>
           </div>
           <h1 class="hero-heading" data-i18n="myDayTitle" style="margin-top: 0.4rem;">My Daily Rhythm</h1>
           <p class="hero-subheading" data-i18n="myDaySubtitle">Gentle reminders that keep your day peaceful, hydrated, and connected.</p>
         </div>
-        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+          <button class="btn-smaran btn-smaran-ghost" onclick="smaranApp.readFullDailySchedule()" title="Listen to all upcoming reminders today">
+            🔊 Read Today's Rhythm
+          </button>
           <button class="btn-smaran btn-smaran-primary" onclick="smaranApp.openAddReminderModal()">
             + Add Daily Reminder
           </button>
         </div>
+      </div>
+
+      <!-- Circadian Clock & Next Up Showcase -->
+      <div class="rhythm-circadian-card" id="rhythmCircadianCard">
+        <div class="circadian-clock-block">
+          <div class="circadian-time-display" id="rhythmLiveClock">--:-- --</div>
+          <div class="circadian-date-display" id="rhythmDateDisplay">Loading today's date...</div>
+          <div class="circadian-phase-badge" id="rhythmPhaseBadge">
+            <span>☀️ Midday Rhythm</span>
+          </div>
+        </div>
+        <div class="circadian-spotlight-block" id="rhythmNextUpCard">
+          <!-- Next upcoming event rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Daily Hydration & Fluid Intake Compass -->
+      <div class="rhythm-hydration-card" id="rhythmHydrationCard">
+        <!-- Hydration Tracker Rendered dynamically -->
       </div>
 
       <!-- Live Wellness Progress Card -->
@@ -340,6 +364,17 @@
         <button class="rhythm-filter-pill" data-period="afternoon" onclick="smaranApp.filterRhythm('afternoon', this)">☀️ Afternoon (<span id="countAfternoon">2</span>)</button>
         <button class="rhythm-filter-pill" data-period="evening" onclick="smaranApp.filterRhythm('evening', this)">🌇 Golden Sunset (<span id="countEvening">2</span>)</button>
         <button class="rhythm-filter-pill" data-period="night" onclick="smaranApp.filterRhythm('night', this)">🌙 Night Serenity (<span id="countNight">1</span>)</button>
+      </div>
+
+      <!-- Category Filter Chips -->
+      <div class="rhythm-category-row" id="rhythmCatFilterBar">
+        <button class="rhythm-cat-chip active" data-cat="all" onclick="smaranApp.filterRhythmCategory('all', this)">🏷️ All Reminders</button>
+        <button class="rhythm-cat-chip" data-cat="Health" onclick="smaranApp.filterRhythmCategory('Health', this)">💊 Medicine & Health</button>
+        <button class="rhythm-cat-chip" data-cat="Nourishment" onclick="smaranApp.filterRhythmCategory('Nourishment', this)">🍵 Tea & Nourishment</button>
+        <button class="rhythm-cat-chip" data-cat="Movement" onclick="smaranApp.filterRhythmCategory('Movement', this)">🌸 Garden & Strolls</button>
+        <button class="rhythm-cat-chip" data-cat="Mind" onclick="smaranApp.filterRhythmCategory('Mind', this)">🌱 Memory Activities</button>
+        <button class="rhythm-cat-chip" data-cat="Family" onclick="smaranApp.filterRhythmCategory('Family', this)">📞 Family Calls</button>
+        <button class="rhythm-cat-chip" data-cat="Rest" onclick="smaranApp.filterRhythmCategory('Rest', this)">🌙 Rest & Relaxation</button>
       </div>
 
       <!-- List of Dynamic Interactive Cards -->
@@ -1387,9 +1422,24 @@
       <h2 style="font-size: 1.8rem; font-weight: 800; color: #17382d; margin-bottom: 0.5rem;">
         + Add Daily Reminder / Rhythm
       </h2>
-      <p style="color: #62756c; margin-bottom: 1.5rem;">
+      <p style="color: #62756c; margin-bottom: 1rem;">
         Add a compassionate daily reminder for Meera (e.g. Doctor appointment, temple visit, specific medicine).
       </p>
+
+      <!-- Quick Preset Template Chips -->
+      <div style="margin-bottom: 1.25rem;">
+        <label style="font-size: 0.8rem; font-weight: 800; color: #1b4d3e; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.4rem;">
+          ⚡ Quick Presets (Click to Auto-fill)
+        </label>
+        <div class="rhythm-preset-chips">
+          <button type="button" class="preset-chip" onclick="smaranApp.applyReminderPreset('coconut_water')">🥥 Coconut Water (3:30 PM)</button>
+          <button type="button" class="preset-chip" onclick="smaranApp.applyReminderPreset('bp_check')">🩺 BP & Sugar Check (9:00 AM)</button>
+          <button type="button" class="preset-chip" onclick="smaranApp.applyReminderPreset('garden_walk')">🌸 Veranda Walk (5:00 PM)</button>
+          <button type="button" class="preset-chip" onclick="smaranApp.applyReminderPreset('temple_prayers')">🪔 Evening Aarti & Prayers (6:30 PM)</button>
+          <button type="button" class="preset-chip" onclick="smaranApp.applyReminderPreset('family_call')">📞 Grandson Rohan Call (7:30 PM)</button>
+          <button type="button" class="preset-chip" onclick="smaranApp.applyReminderPreset('warm_milk')">🥛 Warm Haldi Milk (8:45 PM)</button>
+        </div>
+      </div>
 
       <form onsubmit="smaranApp.handleAddCustomReminder(event)" class="studio-form-grid">
         <div class="studio-input-group">
