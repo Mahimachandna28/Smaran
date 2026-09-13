@@ -151,7 +151,7 @@ class SmaranGamesEngine {
     if (!host) return;
 
     const pairs = [
-      { id: 'ananya', name: 'Ananya (নাতিনী)', img: 'assets/family_ananya.jpg', icon: '👧' },
+      { id: 'ananya', name: 'Ananya (Granddaughter)', img: 'assets/family_ananya.jpg', icon: '👧' },
       { id: 'teagarden', name: 'Our Tea Garden', img: 'assets/tea_gardens.jpg', icon: '🍃' },
       { id: 'bihu', name: 'Bihu Celebration', img: 'assets/bihu_story.jpg', icon: '🎉' },
       { id: 'river', name: 'Brahmaputra Boat', img: 'assets/brahmaputra.jpg', icon: '⛵' }

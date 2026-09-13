@@ -43,6 +43,7 @@ class SmaranApp {
     this.navigateTo('home');
     this.renderMemoryVault();
     this.renderSecurityDashboard();
+    this.renderDailyRhythm();
   }
 
   // --- View Routing ---
@@ -87,6 +88,12 @@ class SmaranApp {
     });
 
     // View specific triggers
+    if (viewName === 'home' || viewName === 'reminders') {
+      this.renderDailyRhythm();
+    }
+    if (viewName === 'vault') {
+      this.renderMemoryVault();
+    }
     if (viewName === 'games' && window.smaranGames) {
       window.smaranGames.renderGameHub();
     }
@@ -131,7 +138,7 @@ class SmaranApp {
     // Update Header Region Text
     const headerReg = document.getElementById('headerRegionName');
     if (headerReg) {
-      headerReg.textContent = `${reg.name} (${reg.nativeName})`;
+      headerReg.textContent = reg.name;
     }
   }
 
@@ -879,6 +886,58 @@ class SmaranApp {
   }
 
   // --- Family Memory Contribution & AI Game Generation ---
+  updateStudioPreview() {
+    const name = (document.getElementById('contribName')?.value || '').toLowerCase();
+    const story = (document.getElementById('contribStory')?.value || '').toLowerCase();
+    const combined = `${name} ${story}`;
+
+    const imgEl = document.getElementById('studioImgPreview');
+    const labelEl = document.getElementById('studioImgLabel');
+    const descEl = document.getElementById('studioImgDesc');
+
+    if (!imgEl) return;
+
+    if (combined.includes('rohan') || combined.includes('sweet') || combined.includes('pitha') || combined.includes('laru') || combined.includes('eat') || combined.includes('food')) {
+      imgEl.src = 'assets/rohan_sweets.jpg';
+      if (labelEl) labelEl.textContent = '✨ AI Artwork Ready: Rohan eating sweets on the veranda';
+      if (descEl) descEl.textContent = 'Authentic Assamese nostalgic family scene with brass plate and veranda sunshine.';
+    } else if (combined.includes('lake') || combined.includes('loktak') || combined.includes('manipur') || combined.includes('boat')) {
+      imgEl.src = 'assets/loktak_lake.jpg';
+      if (labelEl) labelEl.textContent = '✨ AI Artwork Ready: Loktak Lake Floating Phumdis';
+      if (descEl) descEl.textContent = 'World\'s only floating sanctuary with morning mist and serenity.';
+    } else if (combined.includes('bridge') || combined.includes('meghalaya') || combined.includes('root') || combined.includes('sohra')) {
+      imgEl.src = 'assets/meghalaya_root_bridge.jpg';
+      if (labelEl) labelEl.textContent = '✨ AI Artwork Ready: Living Root Bridges of Nongriat';
+      if (descEl) descEl.textContent = 'Ancient bio-engineering over turquoise streams.';
+    } else if (combined.includes('tawang') || combined.includes('monastery') || combined.includes('arunachal')) {
+      imgEl.src = 'assets/tawang_monastery.jpg';
+      if (labelEl) labelEl.textContent = '✨ AI Artwork Ready: Tawang Monastery Dawn';
+      if (descEl) descEl.textContent = 'Himalayan snow peaks and fluttering prayer flags.';
+    } else if (combined.includes('bihu') || combined.includes('dance') || combined.includes('dhol')) {
+      imgEl.src = 'assets/bihu_story.jpg';
+      if (labelEl) labelEl.textContent = '✨ AI Artwork Ready: Rongali Bihu Courtyard Dance';
+      if (descEl) descEl.textContent = 'Golden Muga silk and joyous spring festival.';
+    } else if (combined.includes('tea') || combined.includes('garden') || combined.includes('jorhat')) {
+      imgEl.src = 'assets/tea_gardens.jpg';
+      if (labelEl) labelEl.textContent = '✨ AI Artwork Ready: Jorhat Heritage Tea Estate';
+      if (descEl) descEl.textContent = 'Lush rolling green tea terraces in morning mist.';
+    } else {
+      imgEl.src = 'assets/rohan_sweets.jpg';
+      if (labelEl) labelEl.textContent = '✨ AI Artwork Ready: Rohan eating sweets on the veranda';
+      if (descEl) descEl.textContent = 'Customized AI reminiscence asset synthesized for Meera.';
+    }
+  }
+
+  fillStudioTemplate(name, relation, story, mode) {
+    if (document.getElementById('contribName')) document.getElementById('contribName').value = name;
+    if (document.getElementById('contribRelation')) document.getElementById('contribRelation').value = relation;
+    if (document.getElementById('contribStory')) document.getElementById('contribStory').value = story;
+    if (document.getElementById('contribGameMode')) document.getElementById('contribGameMode').value = mode;
+
+    this.updateStudioPreview();
+    if (window.smaranAudio) window.smaranAudio.playTapSound();
+  }
+
   handleFamilyContribution(e) {
     e.preventDefault();
     const name = document.getElementById('contribName').value;
@@ -890,18 +949,42 @@ class SmaranApp {
     if (!name) return;
 
     const newId = 'custom_' + Date.now();
+    const combined = `${name} ${story}`.toLowerCase();
+
+    // Determine matched AI image
+    let matchedImg = 'assets/rohan_sweets.jpg';
+    if (combined.includes('lake') || combined.includes('loktak') || combined.includes('manipur')) {
+      matchedImg = 'assets/loktak_lake.jpg';
+    } else if (combined.includes('bridge') || combined.includes('meghalaya') || combined.includes('root')) {
+      matchedImg = 'assets/meghalaya_root_bridge.jpg';
+    } else if (combined.includes('tawang') || combined.includes('monastery') || combined.includes('arunachal')) {
+      matchedImg = 'assets/tawang_monastery.jpg';
+    } else if (combined.includes('bihu') || combined.includes('dance')) {
+      matchedImg = 'assets/bihu_story.jpg';
+    } else if (combined.includes('tea') || combined.includes('garden')) {
+      matchedImg = 'assets/tea_gardens.jpg';
+    } else if (combined.includes('ananya')) {
+      matchedImg = 'assets/family_ananya.jpg';
+    }
 
     // 1. Add to Memory Vault
-    SMARAN_STATE.memories.unshift({
+    const newMemory = {
       id: newId,
       category: 'people',
-      tag: '❤️ Family Member',
-      name: name,
+      stateId: 'assam',
+      stateName: 'Assam (অসম)',
+      tag: '❤️ Family & Kin',
+      name: `${name} (${relation || 'Family'})`,
+      nativeName: `${name}ৰ অমূল্য স্মৃতি`,
       relation: relation || 'Family Member',
-      story: story || 'A cherished family memory added for Meera.',
+      story: story || 'A cherished family memory created with love for Meera.',
       favoritePlace: 'Home Veranda',
-      audioNote: `“Voice note recorded in ${dialect.toUpperCase()} dialect.”`
-    });
+      heroImg: matchedImg,
+      audioPrompt: `“${story}” (Voice note recorded in ${dialect.toUpperCase()} dialect)`,
+      gameId: mode || 'who_is_this'
+    };
+
+    SMARAN_STATE.memories.unshift(newMemory);
 
     // 2. Automatically Generate a Playable AI Cognitive Game
     const newGame = {
@@ -913,8 +996,8 @@ class SmaranApp {
       difficulty: 'Gentle',
       duration: '2-3 min',
       skill: 'Facial & Kin Recall',
-      desc: `Personalized cognitive memory activity generated around ${name} (${relation}).`,
-      heroImg: 'assets/family_ananya.jpg',
+      desc: `Personalized cognitive memory activity generated around ${name}: ${story}`,
+      heroImg: matchedImg,
       featured: true
     };
 
@@ -922,7 +1005,7 @@ class SmaranApp {
 
     // 3. Log caregiver sync
     SMARAN_STATE.caregiver.recentSessions.unshift({
-      game: `Generated: ${name}’s Memory`,
+      game: `Published: ${name}’s Memory`,
       difficulty: 'Gentle',
       accuracy: 'Ready to Play',
       time: 'Just now',
@@ -936,8 +1019,272 @@ class SmaranApp {
     this.renderMemoryVault('all');
     this.renderCaregiverDashboard();
 
-    alert(`✨ AI Game Engine Success!\n\nNew personalized cognitive game "${name}’s Memory Challenge" has been generated and added to Meera's Game Hub & Memory Vault.`);
+    this.showToast(`✨ Memory Published: "${name}" added to Memory Vault with AI Artwork!`);
     this.navigateTo('vault');
+  }
+
+  // ==========================================
+  // ENHANCED NORTH-EASTERN MEMORY VAULT ENGINE
+  // ==========================================
+  renderMemoryVault(filterCategory = 'all') {
+    const grid = document.getElementById('memoryCardsGrid');
+    if (!grid || !SMARAN_STATE.memories) return;
+
+    let items = SMARAN_STATE.memories;
+    if (filterCategory !== 'all') {
+      if (filterCategory === 'nature') {
+        items = items.filter(m => m.category === 'places' && m.tag.includes('Nature'));
+      } else {
+        items = items.filter(m => m.category === filterCategory);
+      }
+    }
+
+    grid.innerHTML = items.map(m => `
+      <div class="memory-vault-card" id="mem_${m.id}">
+        <div class="vault-card-media">
+          <img src="${m.heroImg}" alt="${m.name}" class="vault-card-img" onerror="this.src='assets/tea_gardens.jpg'">
+          <span class="vault-state-badge">📍 ${m.stateName || 'North-East'}</span>
+          <span class="vault-cat-badge">${m.tag || '❤️ Memory'}</span>
+        </div>
+        <div class="vault-card-body">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.35rem; gap: 0.5rem;">
+            <div>
+              <h3 class="vault-card-title">${m.name}</h3>
+              ${m.nativeName ? `<div class="vault-card-native">${m.nativeName}</div>` : ''}
+            </div>
+            <span class="vault-rel-pill">${m.relation}</span>
+          </div>
+
+          <p class="vault-card-story">${m.story}</p>
+
+          <div class="vault-audio-snippet">
+            <span>💬 <em>"${m.audioPrompt}"</em></span>
+          </div>
+
+          <div class="vault-card-footer">
+            <button class="btn-smaran btn-smaran-ghost btn-smaran-pill-sm" onclick="smaranApp.speakMemoryStory('${m.id}')" title="Listen Spoken Story">
+              🔊 Listen Story
+            </button>
+            <button class="btn-smaran btn-smaran-primary btn-smaran-pill-sm" onclick="smaranGames.launchGame('${m.gameId || 'family_match'}')">
+              🌿 Play Memory Game →
+            </button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  speakMemoryStory(memoryId) {
+    const m = SMARAN_STATE.memories.find(item => item.id === memoryId);
+    if (!m) return;
+
+    if (window.smaranAudio) window.smaranAudio.playTapSound();
+
+    const textToSpeak = `${m.name}. ${m.story}`;
+    if (window.smaranVoice) {
+      window.smaranVoice.speakTTS(textToSpeak);
+    } else {
+      alert(`❤️ SMARAN Cherished Memory:\n\n${textToSpeak}`);
+    }
+  }
+
+  filterMemoryVault(category, btnEl) {
+    document.querySelectorAll('.vault-filter-btn').forEach(b => b.classList.remove('active'));
+    if (btnEl) btnEl.classList.add('active');
+    this.renderMemoryVault(category);
+  }
+
+  // ==========================================
+  // ENHANCED DAILY RHYTHM & CIRCADIAN ENGINE
+  // ==========================================
+  renderDailyRhythm(filterPeriod = 'all') {
+    if (!SMARAN_STATE.rhythm) return;
+
+    const total = SMARAN_STATE.rhythm.length;
+    const completed = SMARAN_STATE.rhythm.filter(r => r.completed).length;
+    const percentage = Math.round((completed / total) * 100);
+
+    // Update Counts on Filter Pills
+    const countAll = document.getElementById('countAll');
+    if (countAll) countAll.textContent = total;
+
+    ['morning', 'afternoon', 'evening', 'night'].forEach(p => {
+      const el = document.getElementById(`count${p.charAt(0).toUpperCase() + p.slice(1)}`);
+      if (el) {
+        el.textContent = SMARAN_STATE.rhythm.filter(r => r.period === p).length;
+      }
+    });
+
+    // 1. Render Live Wellness Progress Card
+    const progressCard = document.getElementById('rhythmProgressCard');
+    if (progressCard) {
+      let encouragement = "You're having a peaceful, balanced day, Meera ❤️";
+      if (percentage === 100) encouragement = "Outstanding! You have completed all daily moments for today 🌸";
+      else if (percentage >= 50) encouragement = "Wonderful progress! More than halfway through your day's rhythm 🌿";
+
+      const segmentsHtml = SMARAN_STATE.rhythm.map(r => `
+        <div class="rhythm-segment ${r.completed ? 'done' : ''}" title="${r.time} - ${r.title}"></div>
+      `).join('');
+
+      progressCard.innerHTML = `
+        <div class="rhythm-progress-info">
+          <div class="rhythm-progress-title">Today's Daily Rhythm Flow</div>
+          <div class="rhythm-progress-sub">${encouragement}</div>
+          <div class="rhythm-segmented-bar">${segmentsHtml}</div>
+        </div>
+        <div class="rhythm-progress-stat">
+          <div class="rhythm-stat-number">${completed} / ${total}</div>
+          <div class="rhythm-stat-label">${percentage}% Completed</div>
+        </div>
+      `;
+    }
+
+    // 2. Render Dedicated View Rhythm List
+    const fullList = document.getElementById('fullDailyRhythmList');
+    if (fullList) {
+      let items = SMARAN_STATE.rhythm;
+      if (filterPeriod !== 'all') {
+        items = items.filter(r => r.period === filterPeriod);
+      }
+
+      fullList.innerHTML = items.map(item => this.buildRhythmItemHtml(item)).join('');
+    }
+
+    // 3. Render Homepage Rhythm Preview (First 5 items)
+    const homeList = document.getElementById('homeDailyRhythmList');
+    if (homeList) {
+      const previewItems = SMARAN_STATE.rhythm.slice(0, 5);
+      homeList.innerHTML = previewItems.map(item => this.buildRhythmItemHtml(item, true)).join('');
+    }
+  }
+
+  buildRhythmItemHtml(item, isCompact = false) {
+    const isCompleted = !!item.completed;
+    const lang = window.i18n ? window.i18n.currentLang : 'en';
+    const displayTitle = (lang === 'as' && item.nativeTitle) ? item.nativeTitle : item.title;
+
+    return `
+      <div class="timeline-flow-item ${isCompleted ? 'is-completed' : ''}" id="rhythm_${item.id}">
+        <div class="timeline-time-badge">
+          <span>${item.time}</span>
+          <span class="timeline-period-label">${item.periodLabel || item.period}</span>
+        </div>
+
+        <div class="timeline-content-block">
+          <div class="timeline-icon-circle">${item.icon}</div>
+          <div class="timeline-text-body">
+            <div class="timeline-title-text">${displayTitle}</div>
+            <div class="timeline-sub-text">${item.subtitle}</div>
+            <span class="timeline-category-tag" style="background: ${item.categoryColor || '#1b4d3e'}18; color: ${item.categoryColor || '#1b4d3e'};">
+              ${item.category}
+            </span>
+          </div>
+        </div>
+
+        <div class="timeline-actions-group">
+          <button class="btn-rhythm-voice" onclick="smaranApp.speakRhythmVoice('${item.id}')" title="Listen Spoken Reminder">
+            🔊
+          </button>
+          <button class="btn-rhythm-toggle ${isCompleted ? 'done' : 'pending'}" onclick="smaranApp.toggleRhythmComplete('${item.id}')">
+            ${isCompleted ? `✓ Completed ${item.completedAt ? '(' + item.completedAt + ')' : ''}` : '○ Mark Done'}
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  filterRhythm(period, btnElement) {
+    document.querySelectorAll('.rhythm-filter-pill').forEach(b => b.classList.remove('active'));
+    if (btnElement) btnElement.classList.add('active');
+    this.renderDailyRhythm(period);
+  }
+
+  toggleRhythmComplete(rhythmId) {
+    const item = SMARAN_STATE.rhythm.find(r => r.id === rhythmId);
+    if (!item) return;
+
+    item.completed = !item.completed;
+    if (item.completed) {
+      item.completedAt = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      if (window.smaranAudio) window.smaranAudio.playSuccessChime();
+      this.showToast(`🌸 Wonderful! "${item.title}" marked completed.`);
+    } else {
+      item.completedAt = null;
+      if (window.smaranAudio) window.smaranAudio.playTapSound();
+    }
+
+    const activeFilter = document.querySelector('.rhythm-filter-pill.active')?.getAttribute('data-period') || 'all';
+    this.renderDailyRhythm(activeFilter);
+  }
+
+  speakRhythmVoice(rhythmId) {
+    const item = SMARAN_STATE.rhythm.find(r => r.id === rhythmId);
+    if (!item) return;
+
+    if (window.smaranAudio) window.smaranAudio.playTapSound();
+
+    if (window.smaranVoice) {
+      window.smaranVoice.speakTTS(item.voiceText || `${item.time}. Time for ${item.title}.`);
+    } else {
+      alert(`🔊 SMARAN Gentle Reminder:\n\n"${item.voiceText}"`);
+    }
+  }
+
+  openAddReminderModal() {
+    const modal = document.getElementById('addReminderModal');
+    if (modal) modal.classList.add('active');
+  }
+
+  handleAddCustomReminder(e) {
+    e.preventDefault();
+    const title = document.getElementById('newReminderTitle').value;
+    const time = document.getElementById('newReminderTime').value;
+    const period = document.getElementById('newReminderPeriod').value;
+    const category = document.getElementById('newReminderCategory').value;
+    const voiceText = document.getElementById('newReminderVoice').value;
+
+    if (!title || !time) return;
+
+    const newReminder = {
+      id: 'r_custom_' + Date.now(),
+      time: time,
+      period: period,
+      periodLabel: period.charAt(0).toUpperCase() + period.slice(1),
+      title: title,
+      nativeTitle: title,
+      subtitle: voiceText || 'Custom family reminder for Meera',
+      icon: category === 'Health' ? '💊' : (category === 'Nourishment' ? '🍵' : (category === 'Movement' ? '🌸' : (category === 'Family' ? '📞' : '⏰'))),
+      completed: false,
+      completedAt: null,
+      category: category,
+      categoryColor: '#1b4d3e',
+      voiceText: voiceText || `Meera, it is ${time}. Reminder for ${title}.`,
+      soundType: 'chime'
+    };
+
+    SMARAN_STATE.rhythm.push(newReminder);
+    document.getElementById('addReminderModal').classList.remove('active');
+    document.getElementById('newReminderTitle').value = '';
+    document.getElementById('newReminderTime').value = '';
+    document.getElementById('newReminderVoice').value = '';
+
+    if (window.smaranAudio) window.smaranAudio.playSuccessChime();
+    this.showToast(`✓ New daily reminder "${title}" added!`);
+
+    const activeFilter = document.querySelector('.rhythm-filter-pill.active')?.getAttribute('data-period') || 'all';
+    this.renderDailyRhythm(activeFilter);
+  }
+
+  showToast(message) {
+    const toast = document.getElementById('smaranGlobalToast');
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.add('active');
+
+    setTimeout(() => {
+      toast.classList.remove('active');
+    }, 3200);
   }
 }
 

@@ -544,17 +544,165 @@ body.high-contrast .btn-smaran-ghost {
 }
 
 /* ==========================================
-   MY DAY TIMELINE FLOW
+   MY DAILY RHYTHM & CIRCADIAN TIMELINE FLOW
    ========================================== */
 .timeline-flow-container {
-  margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
 }
 
+.rhythm-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.rhythm-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #eef7f2;
+  border: 1px solid #c8e4d3;
+  color: #1b4d3e;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Daily Wellness Progress Banner */
+.rhythm-progress-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f7fbf8 100%);
+  border: 2px solid #d8ecdf;
+  border-radius: 24px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 20px rgba(27, 77, 62, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.rhythm-progress-info {
+  flex: 1;
+  min-width: 260px;
+}
+
+.rhythm-progress-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #17382d;
+  margin-bottom: 0.35rem;
+}
+
+.rhythm-progress-sub {
+  font-size: 1rem;
+  color: #556b61;
+  line-height: 1.45;
+  margin-bottom: 0.9rem;
+}
+
+.rhythm-segmented-bar {
+  display: flex;
+  gap: 6px;
+  height: 10px;
+  background: #e6efe8;
+  border-radius: 9999px;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.rhythm-segment {
+  flex: 1;
+  border-radius: 9999px;
+  background: #d0e0d4;
+  transition: all 0.3s ease;
+}
+
+.rhythm-segment.done {
+  background: linear-gradient(90deg, #287a4a, #48bb78);
+  box-shadow: 0 0 6px rgba(40, 122, 74, 0.4);
+}
+
+.rhythm-progress-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 2px solid #c8e4d3;
+  border-radius: 20px;
+  padding: 1rem 1.5rem;
+  min-width: 140px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.rhythm-stat-number {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #1b4d3e;
+  line-height: 1;
+}
+
+.rhythm-stat-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #62756c;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.35rem;
+}
+
+/* Time-of-Day Filter Bar */
+.rhythm-filters-row {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.rhythm-filter-pill {
+  background: #ffffff;
+  border: 1.5px solid #dce8e0;
+  padding: 0.55rem 1.25rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #495e54;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.rhythm-filter-pill:hover {
+  background: #f0f7f2;
+  border-color: #1b4d3e;
+  color: #1b4d3e;
+}
+
+.rhythm-filter-pill.active {
+  background: #1b4d3e;
+  color: #ffffff;
+  border-color: #1b4d3e;
+  box-shadow: 0 4px 14px rgba(27, 77, 62, 0.2);
+}
+
+/* Flow List of Cards */
 .timeline-flow-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-top: 1.25rem;
+  gap: 1.15rem;
+  margin-top: 0.5rem;
 }
 
 .timeline-flow-item {
@@ -563,21 +711,187 @@ body.high-contrast .btn-smaran-ghost {
   justify-content: space-between;
   padding: 1.25rem 1.75rem;
   background: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+  border-radius: 22px;
+  border: 2px solid #e2ece4;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  gap: 1.25rem;
+}
+
+.timeline-flow-item:hover {
+  transform: translateY(-2px);
+  border-color: #b0d4be;
+  box-shadow: 0 8px 24px rgba(27, 77, 62, 0.08);
+}
+
+.timeline-flow-item.is-completed {
+  background: #f7fbf8;
+  border-color: #c8e4d3;
+}
+
+.timeline-flow-item.is-completed .timeline-title-text {
+  color: #3b5046;
 }
 
 .timeline-time-badge {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   font-weight: 800;
-  color: #708278;
-  min-width: 85px;
+  color: #1b4d3e;
+  min-width: 95px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.timeline-period-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #83968b;
+  margin-top: 2px;
+}
+
+.timeline-content-block {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  flex: 1;
+}
+
+.timeline-icon-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: #f0f7f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+  border: 1.5px solid #e0eee4;
+}
+
+.timeline-flow-item.is-completed .timeline-icon-circle {
+  background: #e6f4ec;
+  border-color: #c2e2ce;
+}
+
+.timeline-text-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
 
 .timeline-title-text {
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 800;
   color: #17382d;
+  line-height: 1.25;
+}
+
+.timeline-sub-text {
+  font-size: 0.95rem;
+  color: #62756c;
+  line-height: 1.4;
+}
+
+.timeline-category-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.15rem 0.55rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  margin-top: 0.3rem;
+  width: fit-content;
+}
+
+.timeline-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.btn-rhythm-voice {
+  background: #f4f8f5;
+  border: 1.5px solid #c8e0d1;
+  color: #1b4d3e;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-rhythm-voice:hover {
+  background: #1b4d3e;
+  color: #ffffff;
+  border-color: #1b4d3e;
+  transform: scale(1.06);
+}
+
+.btn-rhythm-toggle {
+  min-height: 48px;
+  padding: 0.65rem 1.4rem;
+  border-radius: 9999px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-rhythm-toggle.pending {
+  background: #1b4d3e;
+  color: #ffffff;
+  border: 2px solid #1b4d3e;
+}
+
+.btn-rhythm-toggle.pending:hover {
+  background: #236350;
+  border-color: #236350;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(27, 77, 62, 0.25);
+}
+
+.btn-rhythm-toggle.done {
+  background: #eef7f2;
+  color: #287a4a;
+  border: 2px solid #a8dbbb;
+}
+
+.btn-rhythm-toggle.done:hover {
+  background: #e2f2e8;
+  border-color: #287a4a;
+}
+
+@media (max-width: 768px) {
+  .timeline-flow-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem;
+  }
+  .timeline-actions-group {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #edf4ef;
+  }
+  .rhythm-progress-card {
+    flex-direction: column;
+  }
+  .rhythm-progress-stat {
+    width: 100%;
+  }
 }
 
 /* ==========================================
@@ -1200,4 +1514,31 @@ body[data-view="caregiver"] .floating-sos-trigger,
   border-radius: 9999px;
   font-size: 0.78rem;
   font-weight: 700;
+}
+
+/* 6. Global Floating Toast Notification */
+.global-toast {
+  position: fixed;
+  bottom: 85px;
+  left: 50%;
+  transform: translateX(-50%) translateY(30px);
+  background: #17382d;
+  color: #ffffff;
+  padding: 0.85rem 1.75rem;
+  border-radius: 9999px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  border: 2px solid #d4a359;
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 90vw;
+  text-align: center;
+}
+
+.global-toast.active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
